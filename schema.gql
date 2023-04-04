@@ -2,15 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Event {
-  """Example field (placeholder)"""
-  name: String!
-
-  """Example field (placeholder)"""
-  organization_id: String!
-  actions: [EventAction!]!
-}
-
 type EventActionResource {
   """Example field (placeholder)"""
   recipients: [String!]!
@@ -30,9 +21,64 @@ type EventAction {
   resource: EventActionResource!
 }
 
+type EventConditionResource {
+  """Example field (placeholder)"""
+  time_zone: String!
+}
+
+type EventCondition {
+  """Example field (placeholder)"""
+  type_: String!
+
+  """Example field (placeholder)"""
+  resource: EventConditionResource!
+}
+
+type OrganizationInformation {
+  """Example field (placeholder)"""
+  name: String!
+
+  """Example field (placeholder)"""
+  ownerNameDisplay: String!
+
+  """Example field (placeholder)"""
+  nickName: String!
+}
+
+type Organization {
+  """Example field (placeholder)"""
+  isPrimary: Boolean!
+
+  """Example field (placeholder)"""
+  information: OrganizationInformation!
+}
+
+type Event {
+  """Example field (placeholder)"""
+  name: String!
+
+  """Example field (placeholder)"""
+  organizationId: String!
+  organization: [EventCondition!]!
+
+  """Example field (placeholder)"""
+  actionIds: [String!]!
+  actions: [EventAction!]!
+
+  """Example field (placeholder)"""
+  conditionIds: [String!]!
+  conditions: [EventCondition!]!
+}
+
 type Query {
+  events: [Event!]!
   event(id: Int!): Event!
+  eventActions: [EventAction!]!
   eventAction(id: Int!): EventAction!
+  eventConditions: [EventCondition!]!
+  eventCondition(id: String!): EventCondition!
+  organizations: [Organization!]!
+  organization(id: Int!): Organization!
 }
 
 type Mutation {
@@ -42,6 +88,12 @@ type Mutation {
   createEventAction(createEventActionInput: CreateEventActionInput!): EventAction!
   updateEventAction(updateEventActionInput: UpdateEventActionInput!): EventAction!
   removeEventAction(id: Int!): EventAction!
+  createEventCondition(createEventConditionInput: CreateEventConditionInput!): EventCondition!
+  updateEventCondition(updateEventConditionInput: UpdateEventConditionInput!): EventCondition!
+  removeEventCondition(id: Int!): EventCondition!
+  createOrganization(createOrganizationInput: CreateOrganizationInput!): Organization!
+  updateOrganization(updateOrganizationInput: UpdateOrganizationInput!): Organization!
+  removeOrganization(id: Int!): Organization!
 }
 
 input CreateEventInput {
@@ -49,7 +101,7 @@ input CreateEventInput {
   name: String!
 
   """Example field (placeholder)"""
-  organization_id: String!
+  organizationId: String!
 }
 
 input UpdateEventInput {
@@ -57,7 +109,7 @@ input UpdateEventInput {
   name: String
 
   """Example field (placeholder)"""
-  organization_id: String
+  organizationId: String
   id: Int!
 }
 
@@ -86,5 +138,27 @@ input UpdateEventActionInput {
 
   """Example field (placeholder)"""
   resource: CreateEventActionResourceInput
+  id: Int!
+}
+
+input CreateEventConditionInput {
+  """Example field (placeholder)"""
+  type_: String!
+}
+
+input UpdateEventConditionInput {
+  """Example field (placeholder)"""
+  type_: String
+  id: Int!
+}
+
+input CreateOrganizationInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateOrganizationInput {
+  """Example field (placeholder)"""
+  exampleField: Int
   id: Int!
 }

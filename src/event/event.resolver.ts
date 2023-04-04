@@ -5,26 +5,19 @@ import { CreateEventInput } from './dto/create-event.input';
 import { UpdateEventInput } from './dto/update-event.input';
 import { EventActionService } from 'src/event-action/event-action.service';
 import { EventAction } from 'src/event-action/entities/event-action.entity';
+import { EventCondition } from 'src/event-condition/entities/event-condition.entity';
+import { EventConditionService } from 'src/event-condition/event-condition.service';
 
 @Resolver(() => Event)
 export class EventResolver {
-  constructor(private readonly eventService: EventService, private readonly eventActionService: EventActionService) { }
-
-  @ResolveProperty(() => [EventAction], {
-    name: 'actions',
-  })
-  public async getActions(
-    @Parent() event: Event
-  ) {
-    return await this.eventActionService.findAll(event.actions);
-  }
+  constructor(private readonly eventService: EventService, private readonly eventActionService: EventActionService, private readonly eventConditionService: EventConditionService) { }
 
   @Mutation(() => Event)
   createEvent(@Args('createEventInput') createEventInput: CreateEventInput) {
     return this.eventService.create(createEventInput);
   }
 
-  @Query(() => [Event], { name: 'event' })
+  @Query(() => [Event], { name: 'events' })
   findAll() {
     return this.eventService.findAll();
   }
@@ -42,5 +35,20 @@ export class EventResolver {
   @Mutation(() => Event)
   removeEvent(@Args('id', { type: () => Int }) id: number) {
     return this.eventService.remove(id);
+  }
+
+  @ResolveProperty(() => [EventAction], { name: 'actions', })
+  public async getActions( @Parent() event: Event ) {
+    return await this.eventActionService.findAll(event.actionIds);
+  }
+
+  @ResolveProperty(() => [EventCondition], { name: 'conditions', })
+  public async getConditions( @Parent() event: Event ) {
+    return await this.eventConditionService.findAll(event.conditionIds);
+  }
+
+  @ResolveProperty(() => [EventCondition], { name: 'organization', })
+  public async getOrganization( @Parent() event: Event ) {
+    return await this.eventConditionService.findOne(event.organizationId);
   }
 }

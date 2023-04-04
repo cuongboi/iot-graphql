@@ -13,7 +13,7 @@ export class EventActionResolver {
     return this.eventActionService.create(createEventActionInput);
   }
 
-  @Query(() => [EventAction], { name: 'eventAction' })
+  @Query(() => [EventAction], { name: 'eventActions' })
   findAll() {
     return this.eventActionService.findAll();
   }

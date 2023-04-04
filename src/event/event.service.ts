@@ -13,13 +13,13 @@ export class EventService {
     return [
       {
         name: 'name1',
-        organization_id: 'organization_id',
-        actions: ['action1'],
+        organizationId: 'organizationId',
+        actionIds: ['action1'],
       } as Event,
       {
         name: 'name2',
-        organization_id: 'organization_id',
-        actions: ['action1'],
+        organizationId: 'organizationId',
+        actionIds: ['action1'],
       } as Event
     ];
   }
@@ -27,8 +27,9 @@ export class EventService {
   findOne(id: number) {
     return {
       name: 'name',
-      organization_id: 'organization_id',
-      actions: ['action1', 'action2', 'action3'],
+      organizationId: 'organizationId',
+      actionIds: ['action1', 'action2', 'action3'],
+      conditionIds: ['condition1', 'condition2', 'condition3'],
     } as Event;
   }
 

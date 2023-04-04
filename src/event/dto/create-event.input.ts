@@ -6,5 +6,5 @@ export class CreateEventInput {
   name: string;
 
   @Field(() => String, { description: 'Example field (placeholder)' })
-  organization_id: string;
+  organizationId: string;
 }
