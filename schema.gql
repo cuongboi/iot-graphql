@@ -2,49 +2,89 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Fruit {
+type Event {
   """Example field (placeholder)"""
-  exampleField: Int!
+  name: String!
+
+  """Example field (placeholder)"""
+  organization_id: String!
+  actions: [EventAction!]!
 }
 
-type User {
+type EventActionResource {
   """Example field (placeholder)"""
-  exampleField: Int!
+  recipients: [String!]!
+
+  """Example field (placeholder)"""
+  subject: String!
+
+  """Example field (placeholder)"""
+  content: String!
+}
+
+type EventAction {
+  """Example field (placeholder)"""
+  type_: String!
+
+  """Example field (placeholder)"""
+  resource: EventActionResource!
 }
 
 type Query {
-  fruit(id: Int!): Fruit!
-  users: [User!]!
-  user(id: Int!): User!
+  event(id: Int!): Event!
+  eventAction(id: Int!): EventAction!
 }
 
 type Mutation {
-  createFruit(createFruitInput: CreateFruitInput!): Fruit!
-  updateFruit(updateFruitInput: UpdateFruitInput!): Fruit!
-  removeFruit(id: Int!): Fruit!
-  createUser(createUserInput: CreateUserInput!): User!
-  updateUser(updateUserInput: UpdateUserInput!): User!
-  removeUser(id: Int!): User!
+  createEvent(createEventInput: CreateEventInput!): Event!
+  updateEvent(updateEventInput: UpdateEventInput!): Event!
+  removeEvent(id: Int!): Event!
+  createEventAction(createEventActionInput: CreateEventActionInput!): EventAction!
+  updateEventAction(updateEventActionInput: UpdateEventActionInput!): EventAction!
+  removeEventAction(id: Int!): EventAction!
 }
 
-input CreateFruitInput {
+input CreateEventInput {
   """Example field (placeholder)"""
-  exampleField: Int!
+  name: String!
+
+  """Example field (placeholder)"""
+  organization_id: String!
 }
 
-input UpdateFruitInput {
+input UpdateEventInput {
   """Example field (placeholder)"""
-  exampleField: Int
+  name: String
+
+  """Example field (placeholder)"""
+  organization_id: String
   id: Int!
 }
 
-input CreateUserInput {
+input CreateEventActionInput {
   """Example field (placeholder)"""
-  exampleField: Int!
+  type_: String!
+
+  """Example field (placeholder)"""
+  resource: CreateEventActionResourceInput!
 }
 
-input UpdateUserInput {
+input CreateEventActionResourceInput {
   """Example field (placeholder)"""
-  exampleField: Int
+  recipients: [String!]!
+
+  """Example field (placeholder)"""
+  subject: String!
+
+  """Example field (placeholder)"""
+  content: String!
+}
+
+input UpdateEventActionInput {
+  """Example field (placeholder)"""
+  type_: String
+
+  """Example field (placeholder)"""
+  resource: CreateEventActionResourceInput
   id: Int!
 }
