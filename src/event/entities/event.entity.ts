@@ -5,7 +5,6 @@ import { Organization } from 'src/organization/entities/organization.entity';
 
 @ObjectType()
 export class Event {
-
   @Field(() => String, { description: 'Example field (placeholder)' })
   name: string;
 

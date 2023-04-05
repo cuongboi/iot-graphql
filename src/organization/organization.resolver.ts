@@ -9,7 +9,10 @@ export class OrganizationResolver {
   constructor(private readonly organizationService: OrganizationService) {}
 
   @Mutation(() => Organization)
-  createOrganization(@Args('createOrganizationInput') createOrganizationInput: CreateOrganizationInput) {
+  createOrganization(
+    @Args('createOrganizationInput')
+    createOrganizationInput: CreateOrganizationInput,
+  ) {
     return this.organizationService.create(createOrganizationInput);
   }
 
@@ -19,13 +22,19 @@ export class OrganizationResolver {
   }
 
   @Query(() => Organization, { name: 'organization' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  findOne(@Args('id', { type: () => Int }) id: string) {
     return this.organizationService.findOne(id);
   }
 
   @Mutation(() => Organization)
-  updateOrganization(@Args('updateOrganizationInput') updateOrganizationInput: UpdateOrganizationInput) {
-    return this.organizationService.update(updateOrganizationInput.id, updateOrganizationInput);
+  updateOrganization(
+    @Args('updateOrganizationInput')
+    updateOrganizationInput: UpdateOrganizationInput,
+  ) {
+    return this.organizationService.update(
+      updateOrganizationInput.id,
+      updateOrganizationInput,
+    );
   }
 
   @Mutation(() => Organization)

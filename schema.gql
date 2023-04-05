@@ -59,7 +59,7 @@ type Event {
 
   """Example field (placeholder)"""
   organizationId: String!
-  organization: [EventCondition!]!
+  organization: Organization!
 
   """Example field (placeholder)"""
   actionIds: [String!]!

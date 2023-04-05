@@ -17,6 +17,8 @@ export class Organization {
   @Field(() => Boolean, { description: 'Example field (placeholder)' })
   isPrimary: boolean;
 
-  @Field(() => OrganizationInformation, { description: 'Example field (placeholder)' })
+  @Field(() => OrganizationInformation, {
+    description: 'Example field (placeholder)',
+  })
   information: OrganizationInformation;
 }
