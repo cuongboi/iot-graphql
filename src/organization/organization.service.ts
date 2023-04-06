@@ -12,29 +12,13 @@ export class OrganizationService {
     return 'This action adds a new organization';
   }
 
-  findAll() {
-    const id = 'de';
-    return [
-      {
-        isPrimary: false,
-        information: {
-          name: `org-${id}`,
-          nickName: `org-${id}`,
-          ownerNameDisplay: `org-${id}`,
-        } as OrganizationInformation,
-      } as Organization,
-    ];
+  async findAll() {
+    return (await api.organization.findAll()).data.data;
   }
 
-  findOne(id: string) {
-    return {
-      isPrimary: false,
-      information: {
-        name: `org-${id}`,
-        nickName: `org-${id}`,
-        ownerNameDisplay: `org-${id}`,
-      } as OrganizationInformation,
-    } as Organization;
+  async findOne(organizationId: string) {
+    return (await api.organization.findOne({ organizationId })).data
+      .data as Organization;
   }
 
   update(id: number, updateOrganizationInput: UpdateOrganizationInput) {

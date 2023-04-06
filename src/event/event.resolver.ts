@@ -33,13 +33,15 @@ export class EventResolver {
   }
 
   @Query(() => [Event], { name: 'events' })
-  findAll() {
-    return this.eventService.findAll();
+  findAll(
+    @Args('organizationId', { type: () => String }) organizationId: string,
+  ) {
+    return this.eventService.findAll(organizationId);
   }
 
   @Query(() => Event, { name: 'event' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.eventService.findOne(id);
+  findOne(@Args('eventId', { type: () => String }) eventId: string) {
+    return this.eventService.findOne(eventId);
   }
 
   @Mutation(() => Event)
@@ -54,12 +56,12 @@ export class EventResolver {
 
   @ResolveProperty(() => [EventAction], { name: 'actions' })
   public async getActions(@Parent() event: Event) {
-    return await this.eventActionService.findAll(event.actionIds);
+    return await this.eventActionService.findAll(event.id);
   }
 
   @ResolveProperty(() => [EventCondition], { name: 'conditions' })
   public async getConditions(@Parent() event: Event) {
-    return await this.eventConditionService.findAll(event.conditionIds);
+    return await this.eventConditionService.findAll(event.id);
   }
 
   @ResolveProperty(() => Organization, { name: 'organization' })

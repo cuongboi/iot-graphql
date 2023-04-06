@@ -1,4 +1,5 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { buildProperties } from 'src/utils';
 
 @ObjectType()
 export class EventConditionResource {
@@ -9,8 +10,20 @@ export class EventConditionResource {
 @ObjectType()
 export class EventCondition {
   @Field(() => String, { description: 'Example field (placeholder)' })
+  id: string;
+
+  @Field(() => String, { description: 'Example field (placeholder)' })
   type_: string;
 
-  @Field(() => EventConditionResource, { description: 'Example field (placeholder)' })
+  @Field(() => EventConditionResource, {
+    description: 'Example field (placeholder)',
+  })
   resource: EventConditionResource;
+
+  static from(e: any) {
+    return buildProperties(e, [
+      { valueName: 'uuid', mapName: 'id' },
+      { valueName: 'organization_id', mapName: 'organizationId' },
+    ]);
+  }
 }

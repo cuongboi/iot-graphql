@@ -9,13 +9,16 @@ export class EventConditionResolver {
   constructor(private readonly eventConditionService: EventConditionService) {}
 
   @Mutation(() => EventCondition)
-  createEventCondition(@Args('createEventConditionInput') createEventConditionInput: CreateEventConditionInput) {
+  createEventCondition(
+    @Args('createEventConditionInput')
+    createEventConditionInput: CreateEventConditionInput,
+  ) {
     return this.eventConditionService.create(createEventConditionInput);
   }
 
   @Query(() => [EventCondition], { name: 'eventConditions' })
-  findAll() {
-    return this.eventConditionService.findAll();
+  findAll(@Args('eventId', { type: () => String }) eventId: string) {
+    return this.eventConditionService.findAll(eventId);
   }
 
   @Query(() => EventCondition, { name: 'eventCondition' })
@@ -24,8 +27,14 @@ export class EventConditionResolver {
   }
 
   @Mutation(() => EventCondition)
-  updateEventCondition(@Args('updateEventConditionInput') updateEventConditionInput: UpdateEventConditionInput) {
-    return this.eventConditionService.update(updateEventConditionInput.id, updateEventConditionInput);
+  updateEventCondition(
+    @Args('updateEventConditionInput')
+    updateEventConditionInput: UpdateEventConditionInput,
+  ) {
+    return this.eventConditionService.update(
+      updateEventConditionInput.id,
+      updateEventConditionInput,
+    );
   }
 
   @Mutation(() => EventCondition)

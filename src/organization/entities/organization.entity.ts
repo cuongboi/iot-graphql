@@ -14,8 +14,14 @@ export class OrganizationInformation {
 
 @ObjectType()
 export class Organization {
+  @Field(() => String, { description: 'Example field (placeholder)' })
+  id: string;
+
   @Field(() => Boolean, { description: 'Example field (placeholder)' })
   isPrimary: boolean;
+
+  @Field(() => String, { description: 'Example field (placeholder)' })
+  ownerID: string;
 
   @Field(() => OrganizationInformation, {
     description: 'Example field (placeholder)',

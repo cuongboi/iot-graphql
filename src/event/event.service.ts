@@ -9,28 +9,14 @@ export class EventService {
     return 'This action adds a new event';
   }
 
-  findAll() {
-    return [
-      {
-        name: 'name1',
-        organizationId: 'organizationId',
-        actionIds: ['action1'],
-      } as Event,
-      {
-        name: 'name2',
-        organizationId: 'organizationId',
-        actionIds: ['action1'],
-      } as Event
-    ];
+  async findAll(organizationId: string) {
+    return (
+      await api.event.findAll({ organization_id: organizationId })
+    ).data.data.map((e) => Event.from(e));
   }
 
-  findOne(id: number) {
-    return {
-      name: 'name',
-      organizationId: 'organizationId',
-      actionIds: ['action1', 'action2', 'action3'],
-      conditionIds: ['condition1', 'condition2', 'condition3'],
-    } as Event;
+  async findOne(eventId: string) {
+    return Event.from((await api.event.findOne({ eventId })).data.data);
   }
 
   update(id: number, updateEventInput: UpdateEventInput) {
