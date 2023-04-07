@@ -1,0 +1,2110 @@
+{
+    "info": {
+      "description": "IOT Portal Event Swagger doc",
+      "title": "IOT Portal Event",
+      "version": "0.0.1"
+    },
+    "security": [
+      {
+        "AccessToken": []
+      }
+    ],
+    "paths": {
+      "/events": {
+        "get": {
+          "tags": [
+            "event"
+          ],
+          "summary": "Get all events of specified organization",
+          "operationId": "getEventsByOrganizationId",
+          "parameters": [
+            {
+              "name": "organization_id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "in": "query",
+              "description": "Organization ID"
+            },
+            {
+              "name": "offset",
+              "required": false,
+              "schema": {
+                "type": "integer"
+              },
+              "in": "query",
+              "description": "Offset for paginated result"
+            },
+            {
+              "name": "limit",
+              "required": false,
+              "schema": {
+                "type": "integer"
+              },
+              "in": "query",
+              "description": "Limit for paginated result"
+            },
+            {
+              "name": "filter",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "name",
+                  "action",
+                  "condition"
+                ]
+              },
+              "in": "query",
+              "description": "Filtering option"
+            },
+            {
+              "name": "name",
+              "required": false,
+              "schema": {
+                "type": "string"
+              },
+              "in": "query",
+              "description": "Event name for filtering"
+            },
+            {
+              "name": "gateway_id",
+              "required": false,
+              "schema": {
+                "type": "string"
+              },
+              "in": "query",
+              "description": "Gateway ID for filtering"
+            },
+            {
+              "name": "device_id",
+              "required": false,
+              "schema": {
+                "type": "string"
+              },
+              "in": "query",
+              "description": "Device (LDSU) ID for filtering"
+            },
+            {
+              "name": "said",
+              "required": false,
+              "schema": {
+                "type": "integer"
+              },
+              "in": "query",
+              "description": "SAID for filtering"
+            },
+            {
+              "name": "recipient",
+              "required": false,
+              "schema": {
+                "type": "string"
+              },
+              "in": "query",
+              "description": "Recipient for filtering"
+            },
+            {
+              "name": "by",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "modify_time",
+                  "create_time",
+                  "name",
+                  "activate",
+                  "conditions",
+                  "actions"
+                ]
+              },
+              "in": "query",
+              "description": "Ordering column"
+            },
+            {
+              "name": "order",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "desc",
+                  "asc"
+                ]
+              },
+              "in": "query",
+              "description": "Ordering method"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Event info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Event"
+                        }
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "event"
+          ],
+          "summary": "Create new event",
+          "operationId": "createEvent",
+          "requestBody": {
+            "description": "New event info",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventPost"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Event info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/Event"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/events/{event_uuid}": {
+        "delete": {
+          "tags": [
+            "event"
+          ],
+          "summary": "Delete event info by uuid",
+          "operationId": "deleteEventById",
+          "parameters": [
+            {
+              "name": "event_uuid",
+              "in": "path",
+              "description": "Event ID",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Delete event info succeeded"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "get": {
+          "tags": [
+            "event"
+          ],
+          "summary": "Get event info by uuid",
+          "operationId": "getEventById",
+          "parameters": [
+            {
+              "name": "event_uuid",
+              "in": "path",
+              "description": "Event ID",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Event info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/Event"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "patch": {
+          "tags": [
+            "event"
+          ],
+          "summary": "Update event info by uuid",
+          "operationId": "updateEventById",
+          "parameters": [
+            {
+              "name": "event_uuid",
+              "in": "path",
+              "description": "Event ID",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "Event info to update",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventPatch"
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "Update event info succeeded"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/events/{event_uuid}/copy": {
+        "post": {
+          "tags": [
+            "event"
+          ],
+          "summary": "Duplicate an event by uuid",
+          "operationId": "cloneEventById",
+          "parameters": [
+            {
+              "name": "event_uuid",
+              "in": "path",
+              "description": "Event ID",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Event info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/Event"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/events/{event_uuid}/condition": {
+        "get": {
+          "tags": [
+            "condition"
+          ],
+          "summary": "Get all conditions of specified event",
+          "operationId": "getConditionsByEventId",
+          "parameters": [
+            {
+              "name": "event_uuid",
+              "in": "path",
+              "description": "Event ID",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Condition info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Condition"
+                        }
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "condition"
+          ],
+          "summary": "Create new condition",
+          "operationId": "createEventCondition",
+          "parameters": [
+            {
+              "name": "event_uuid",
+              "in": "path",
+              "description": "Event ID",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "New condition info",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConditionPost"
+                },
+                "examples": {
+                  "On a Day Example 1": {
+                    "summary": "On a day, at the specific times",
+                    "value": {
+                      "slot": 0,
+                      "type_": "DATETIME",
+                      "resource": {
+                        "time_zone": "Asia/Singapore",
+                        "date1": {
+                          "day": "2022-07-26",
+                          "time_": {
+                            "points": [
+                              "13:15:00",
+                              "13:45:00"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "On a Day Example 2": {
+                    "summary": "On a day, repeating with interval",
+                    "value": {
+                      "slot": 1,
+                      "type_": "DATETIME",
+                      "resource": {
+                        "time_zone": "Asia/Singapore",
+                        "date1": {
+                          "day": "2022-07-26",
+                          "time_": {
+                            "interval": 2
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "Recurrence Example 1": {
+                    "summary": "Repeat every 10 days (from 2022-01-01 to forever), of the whole day",
+                    "value": {
+                      "slot": 2,
+                      "type_": "DATETIME",
+                      "resource": {
+                        "time_zone": "Asia/Singapore",
+                        "date2": {
+                          "start": "2022-01-01",
+                          "repeat": "daily",
+                          "interval": 10,
+                          "daily": {
+                            "ranges": [
+                              [
+                                "00:00:00",
+                                "23:59:59"
+                              ]
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "Recurrence Example 2": {
+                    "summary": "Repeat every 3 weeks (from 2022-01-01 to forever), before 1pm of Friday",
+                    "value": {
+                      "slot": 3,
+                      "type_": "DATETIME",
+                      "resource": {
+                        "time_zone": "Asia/Singapore",
+                        "date2": {
+                          "start": "2022-01-01",
+                          "repeat": "weekly",
+                          "interval": 3,
+                          "weekly": {
+                            "weekdays": {
+                              "5": {
+                                "ranges": [
+                                  [
+                                    "00:00:00",
+                                    "13:00:00"
+                                  ]
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "Recurrence Example 3": {
+                    "summary": "Repeat every 2 months (from 2022-01-01 to forever), after 1pm of the last Friday of selected month",
+                    "value": {
+                      "slot": 4,
+                      "type_": "DATETIME",
+                      "resource": {
+                        "time_zone": "Asia/Singapore",
+                        "date2": {
+                          "start": "2022-01-01",
+                          "repeat": "monthly",
+                          "interval": 2,
+                          "monthly": {
+                            "weekdays": {
+                              "-5": {
+                                "ranges": [
+                                  [
+                                    "13:00:00",
+                                    "23:59:59"
+                                  ]
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "Recurrence Example 4": {
+                    "summary": "Repeat every year (from 2022-01-01 to 2025-12-31), from 1pm to 2pm of the last day of each February",
+                    "value": {
+                      "slot": 5,
+                      "type_": "DATETIME",
+                      "resource": {
+                        "time_zone": "Asia/Singapore",
+                        "date2": {
+                          "start": "2022-01-01",
+                          "end": "2025-12-31",
+                          "repeat": "yearly",
+                          "interval": 1,
+                          "yearly": {
+                            "months": {
+                              "2": {
+                                "days": {
+                                  "-1": {
+                                    "ranges": [
+                                      [
+                                        "13:00:00",
+                                        "14:00:00"
+                                      ]
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "Gateway Status": {
+                    "summary": "When gateway go offline more than 10 minutes, ...",
+                    "value": {
+                      "slot": 0,
+                      "type_": "GATEWAY",
+                      "resource": {
+                        "device": {
+                          "gateway_id": "PH80XXRR06072157205",
+                          "status": "offline",
+                          "for_": 600
+                        }
+                      }
+                    }
+                  },
+                  "LDSU Status": {
+                    "summary": "When LDSU go online more than 1 minute, ...",
+                    "value": {
+                      "slot": 1,
+                      "type_": "LDSU",
+                      "resource": {
+                        "device": {
+                          "gateway_id": "PH80XXRR06072157205",
+                          "device_id": "PH80XXRR0607215720500",
+                          "status": "online",
+                          "for_": 60
+                        }
+                      }
+                    }
+                  },
+                  "Sensor Value": {
+                    "summary": "When sensor value stay in between 20 and 30 more than 10 seconds, ...",
+                    "value": {
+                      "slot": 2,
+                      "type_": "SENSOR",
+                      "resource": {
+                        "device": {
+                          "gateway_id": "PH80XXRR06072157205",
+                          "device_id": "PH80XXRR0607215720500",
+                          "said": 0,
+                          "for_": 10,
+                          "operator": "in",
+                          "thresholds": [
+                            20,
+                            30
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Condition info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/Condition"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/events/{event_uuid}/condition/order": {
+        "patch": {
+          "tags": [
+            "condition"
+          ],
+          "summary": "Update conditions' order",
+          "operationId": "updateEventConditionsByEventId",
+          "parameters": [
+            {
+              "name": "event_uuid",
+              "in": "path",
+              "description": "Event ID",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "Condition ordering info",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConditionOrderPatch"
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "Update conditions' order succeeded"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/events/{event_uuid}/condition/{condition_uuid}": {
+        "delete": {
+          "tags": [
+            "condition"
+          ],
+          "summary": "Delete condition info by uuid",
+          "operationId": "deleteEventConditionById",
+          "parameters": [
+            {
+              "name": "event_uuid",
+              "in": "path",
+              "description": "Event ID",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            },
+            {
+              "name": "condition_uuid",
+              "in": "path",
+              "description": "Condition ID",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Delete condition info succeeded"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "get": {
+          "tags": [
+            "condition"
+          ],
+          "summary": "Get condition info by uuid",
+          "operationId": "getEventConditionById",
+          "parameters": [
+            {
+              "name": "event_uuid",
+              "in": "path",
+              "description": "Event ID",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            },
+            {
+              "name": "condition_uuid",
+              "in": "path",
+              "description": "Condition ID",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Condition info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/Condition"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "patch": {
+          "tags": [
+            "condition"
+          ],
+          "summary": "Update condition info by uuid",
+          "operationId": "updateEventConditionById",
+          "parameters": [
+            {
+              "name": "event_uuid",
+              "in": "path",
+              "description": "Event ID",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            },
+            {
+              "name": "condition_uuid",
+              "in": "path",
+              "description": "Condition ID",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "Condition info to update",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConditionPatch"
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "Update condition info succeeded"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/events/{event_uuid}/action": {
+        "get": {
+          "tags": [
+            "action"
+          ],
+          "summary": "Get all actions of specified event",
+          "operationId": "getEventActionByEventId",
+          "parameters": [
+            {
+              "name": "event_uuid",
+              "in": "path",
+              "description": "Event ID",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Action info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Action"
+                        }
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "action"
+          ],
+          "summary": "Create new action",
+          "operationId": "createEventAction",
+          "parameters": [
+            {
+              "name": "event_uuid",
+              "in": "path",
+              "description": "Event ID",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "New action info",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionPost"
+                },
+                "examples": {
+                  "Send Email": {
+                    "summary": "Send Email when event triggered",
+                    "value": {
+                      "type_": "EMAIL",
+                      "resource": {
+                        "recipients": [
+                          "abc@xyz.com",
+                          "xyz@abc.com"
+                        ],
+                        "subject": "Over Temperature",
+                        "content": "Turn on air conditioner."
+                      }
+                    }
+                  },
+                  "Trigger Actuator": {
+                    "summary": "Trigger an actuator (in auto mode)",
+                    "value": {
+                      "type_": "ACTUATOR",
+                      "resource": {
+                        "gateway_id": "PH80XXRR06072157205",
+                        "device_id": "PH80XXRR0607215720500",
+                        "said": 0,
+                        "status": "on"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Action info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/Action"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/events/{event_uuid}/action/order": {
+        "patch": {
+          "tags": [
+            "action"
+          ],
+          "summary": "Update actions' order",
+          "operationId": "updateEventActionOrderById",
+          "parameters": [
+            {
+              "name": "event_uuid",
+              "in": "path",
+              "description": "Event ID",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "Action ordering info",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionOrderPatch"
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "Update actions' order succeeded"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/events/{event_uuid}/action/{action_uuid}": {
+        "delete": {
+          "tags": [
+            "action"
+          ],
+          "summary": "Delete action info by uuid",
+          "operationId": "deleteEventActionById",
+          "parameters": [
+            {
+              "name": "event_uuid",
+              "in": "path",
+              "description": "Event ID",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            },
+            {
+              "name": "action_uuid",
+              "in": "path",
+              "description": "Action ID",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Delete action info succeeded"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "get": {
+          "tags": [
+            "action"
+          ],
+          "summary": "Get action info by uuid",
+          "operationId": "getEventActionById",
+          "parameters": [
+            {
+              "name": "event_uuid",
+              "in": "path",
+              "description": "Event ID",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            },
+            {
+              "name": "action_uuid",
+              "in": "path",
+              "description": "Action ID",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Condition info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/Action"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "patch": {
+          "tags": [
+            "action"
+          ],
+          "summary": "Update action info by uuid",
+          "operationId": "updateEventActionById",
+          "parameters": [
+            {
+              "name": "event_uuid",
+              "in": "path",
+              "description": "Event ID",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            },
+            {
+              "name": "action_uuid",
+              "in": "path",
+              "description": "Condition ID",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "Action info to update",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionPatch"
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "Update action info succeeded"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      }
+    },
+    "openapi": "3.0.2",
+    "components": {
+      "schemas": {
+        "EventCondtionTime": {
+          "type": "object",
+          "properties": {
+            "ranges": {
+              "type": "array",
+              "description": "Time ranges within a day",
+              "items": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 2,
+                "example": [
+                  "13:00:00",
+                  "14:00:00"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "points": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 50,
+              "description": "Time points within a day",
+              "example": [
+                "13:15:00",
+                "13:45:00"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            "schedule": {
+              "type": "string",
+              "enum": [
+                "all_day",
+                "at",
+                "between",
+                "after",
+                "before",
+                "before_or_after",
+                "every"
+              ],
+              "description": "Time range option",
+              "example": "allday"
+            },
+            "interval": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 720,
+              "description": "Repeat interval in minutes",
+              "example": 5
+            }
+          }
+        },
+        "SingleDay": {
+          "type": "object",
+          "properties": {
+            "time_": {
+              "description": "Triggering time",
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/EventCondtionTime"
+                }
+              ]
+            },
+            "day": {
+              "type": "string",
+              "format": "date",
+              "description": "Single date time condition",
+              "example": "2022-07-26"
+            }
+          },
+          "required": [
+            "time_"
+          ]
+        },
+        "SingleMonth": {
+          "type": "object",
+          "properties": {
+            "weekdays": {
+              "type": "object",
+              "description": "Weekdays time condition",
+              "additionalProperties": {
+                "description": "Triggering time",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/EventCondtionTime"
+                  }
+                ]
+              }
+            },
+            "days": {
+              "type": "object",
+              "description": "Days time condition",
+              "additionalProperties": {
+                "description": "Triggering time",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/EventCondtionTime"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "Year": {
+          "type": "object",
+          "properties": {
+            "months": {
+              "type": "object",
+              "description": "Year time condition",
+              "additionalProperties": {
+                "$ref": "#/components/schemas/SingleMonth"
+              }
+            }
+          },
+          "required": [
+            "months"
+          ]
+        },
+        "Weekdays": {
+          "type": "object",
+          "properties": {
+            "weekdays": {
+              "type": "object",
+              "minLength": 1,
+              "description": "Weekdays time condition",
+              "additionalProperties": {
+                "description": "Triggering time",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/EventCondtionTime"
+                  }
+                ]
+              }
+            }
+          },
+          "required": [
+            "weekdays"
+          ]
+        },
+        "EventCondtionDate": {
+          "type": "object",
+          "properties": {
+            "start": {
+              "type": "string",
+              "format": "date",
+              "description": "Start date",
+              "example": "2022-07-26"
+            },
+            "end": {
+              "type": "string",
+              "format": "date",
+              "description": "End date",
+              "example": "2022-07-27"
+            },
+            "monthly": {
+              "description": "Monthly time condition",
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/SingleMonth"
+                }
+              ]
+            },
+            "daily": {
+              "description": "Daily time condition",
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/EventCondtionTime"
+                }
+              ]
+            },
+            "interval": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Repeat interval in days, weeks, months or years",
+              "example": 2
+            },
+            "yearly": {
+              "description": "Yearly time condition",
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/Year"
+                }
+              ]
+            },
+            "weekly": {
+              "description": "Weekly time condition",
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/Weekdays"
+                }
+              ]
+            },
+            "repeat": {
+              "type": "string",
+              "enum": [
+                "daily",
+                "weekly",
+                "monthly",
+                "yearly"
+              ],
+              "description": "Repeat type",
+              "example": "daily"
+            }
+          },
+          "required": [
+            "interval",
+            "repeat",
+            "start"
+          ]
+        },
+        "EventCondtion": {
+          "type": "object",
+          "properties": {
+            "time_zone": {
+              "type": "string",
+              "description": "Time zone of client",
+              "example": "Asia/Singapore"
+            },
+            "device": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/EventCondtionGateway"
+                },
+                {
+                  "$ref": "#/components/schemas/EventCondtionLdsu"
+                },
+                {
+                  "$ref": "#/components/schemas/EventCondtionSensor"
+                }
+              ],
+              "description": "Triggering device"
+            },
+            "date1": {
+              "description": "Triggering date (single)",
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/SingleDay"
+                }
+              ]
+            },
+            "date2": {
+              "description": "Triggering date (recurrent)",
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/EventCondtionDate"
+                }
+              ]
+            }
+          }
+        },
+        "Condition": {
+          "type": "object",
+          "properties": {
+            "create_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "resource": {
+              "$ref": "#/components/schemas/EventCondtion"
+            },
+            "modify_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "type_": {
+              "type": "string",
+              "enum": [
+                "DATETIME",
+                "GATEWAY",
+                "LDSU",
+                "SENSOR"
+              ],
+              "description": "Condition type",
+              "example": "DATETIME"
+            },
+            "uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "event_uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "slot": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 15,
+              "description": "Slot number. All the conditions in the same solt are chained by \"and\" operator",
+              "example": 0
+            },
+            "order": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Condition order",
+              "example": 0
+            }
+          },
+          "required": [
+            "create_time",
+            "event_uuid",
+            "modify_time",
+            "resource",
+            "slot",
+            "type_",
+            "uuid"
+          ]
+        },
+        "Action": {
+          "type": "object",
+          "properties": {
+            "create_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "resource": {
+              "type": "object",
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/EventActionSms"
+                },
+                {
+                  "$ref": "#/components/schemas/EventActionEmail"
+                },
+                {
+                  "$ref": "#/components/schemas/EventActionPush"
+                },
+                {
+                  "$ref": "#/components/schemas/EventActionActuator"
+                },
+                {
+                  "$ref": "#/components/schemas/EventActionDelay"
+                }
+              ]
+            },
+            "modify_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "type_": {
+              "type": "string",
+              "enum": [
+                "EMAIL",
+                "PUSH",
+                "SMS",
+                "ACTUATOR",
+                "DELAY"
+              ],
+              "description": "Action type",
+              "example": "ACTUATOR"
+            },
+            "uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "event_uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "order": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Action order",
+              "example": 0
+            }
+          },
+          "required": [
+            "create_time",
+            "event_uuid",
+            "modify_time",
+            "resource",
+            "type_",
+            "uuid"
+          ]
+        },
+        "Event": {
+          "type": "object",
+          "properties": {
+            "create_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "is_active": {
+              "type": "boolean"
+            },
+            "activate": {
+              "type": "boolean",
+              "description": "Event status",
+              "example": true
+            },
+            "conditions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Condition"
+              }
+            },
+            "modify_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "organization_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Organization ID",
+              "example": "59902f3b-fc54-4be4-b188-5dc59662e711"
+            },
+            "uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": {
+              "type": "string",
+              "description": "Event name",
+              "example": "Temperature event"
+            },
+            "next_check": {
+              "type": "integer"
+            },
+            "actions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Action"
+              }
+            },
+            "user_": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "actions",
+            "activate",
+            "conditions",
+            "create_time",
+            "is_active",
+            "modify_time",
+            "name",
+            "next_check",
+            "organization_id",
+            "user_",
+            "uuid"
+          ]
+        },
+        "EventPost": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Event name",
+              "example": "Temperature event"
+            },
+            "organization_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Organization ID",
+              "example": "59902f3b-fc54-4be4-b188-5dc59662e711"
+            }
+          },
+          "required": [
+            "name",
+            "organization_id"
+          ]
+        },
+        "EventPatch": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Event name",
+              "example": "Temperature event"
+            },
+            "activate": {
+              "type": "boolean",
+              "description": "Event status",
+              "example": true
+            }
+          }
+        },
+        "ConditionPost": {
+          "type": "object",
+          "properties": {
+            "type_": {
+              "type": "string",
+              "enum": [
+                "DATETIME",
+                "GATEWAY",
+                "LDSU",
+                "SENSOR"
+              ],
+              "description": "Condition type",
+              "example": "DATETIME"
+            },
+            "slot": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 15,
+              "description": "Slot number. All the conditions in the same solt are chained by \"and\" operator",
+              "example": 0
+            },
+            "resource": {
+              "$ref": "#/components/schemas/EventCondtion"
+            },
+            "order": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Condition order",
+              "example": 0
+            }
+          },
+          "required": [
+            "resource",
+            "slot",
+            "type_"
+          ]
+        },
+        "ConditionOrderPatch": {
+          "type": "object",
+          "properties": {
+            "slot": {
+              "type": "object",
+              "description": "Condition slot setting",
+              "additionalProperties": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 15,
+                "description": "Slot number",
+                "example": 1
+              }
+            },
+            "order": {
+              "type": "object",
+              "description": "Condition or Action order setting",
+              "additionalProperties": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "Order number",
+                "example": 1
+              }
+            }
+          },
+          "required": [
+            "order",
+            "slot"
+          ]
+        },
+        "ConditionPatch": {
+          "type": "object",
+          "properties": {
+            "type_": {
+              "type": "string",
+              "enum": [
+                "DATETIME",
+                "GATEWAY",
+                "LDSU",
+                "SENSOR"
+              ],
+              "description": "Condition type",
+              "example": "DATETIME"
+            },
+            "slot": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 15,
+              "description": "Slot number. All the conditions in the same solt are chained by \"and\" operator",
+              "example": 0
+            },
+            "resource": {
+              "$ref": "#/components/schemas/EventCondtion"
+            },
+            "order": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Condition order",
+              "example": 0
+            }
+          }
+        },
+        "ActionPost": {
+          "type": "object",
+          "properties": {
+            "type_": {
+              "type": "string",
+              "enum": [
+                "EMAIL",
+                "PUSH",
+                "SMS",
+                "ACTUATOR",
+                "DELAY"
+              ],
+              "description": "Action type",
+              "example": "ACTUATOR"
+            },
+            "resource": {
+              "type": "object",
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/EventActionSms"
+                },
+                {
+                  "$ref": "#/components/schemas/EventActionEmail"
+                },
+                {
+                  "$ref": "#/components/schemas/EventActionPush"
+                },
+                {
+                  "$ref": "#/components/schemas/EventActionActuator"
+                },
+                {
+                  "$ref": "#/components/schemas/EventActionDelay"
+                }
+              ]
+            },
+            "order": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Action order",
+              "example": 0
+            }
+          },
+          "required": [
+            "resource",
+            "type_"
+          ]
+        },
+        "ActionOrderPatch": {
+          "type": "object",
+          "properties": {
+            "order": {
+              "type": "object",
+              "description": "Condition or Action order setting",
+              "additionalProperties": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "Order number",
+                "example": 1
+              }
+            }
+          },
+          "required": [
+            "order"
+          ]
+        },
+        "ActionPatch": {
+          "type": "object",
+          "properties": {
+            "type_": {
+              "type": "string",
+              "enum": [
+                "EMAIL",
+                "PUSH",
+                "SMS",
+                "ACTUATOR",
+                "DELAY"
+              ],
+              "description": "Action type",
+              "example": "ACTUATOR"
+            },
+            "resource": {
+              "type": "object",
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/EventActionSms"
+                },
+                {
+                  "$ref": "#/components/schemas/EventActionEmail"
+                },
+                {
+                  "$ref": "#/components/schemas/EventActionPush"
+                },
+                {
+                  "$ref": "#/components/schemas/EventActionActuator"
+                },
+                {
+                  "$ref": "#/components/schemas/EventActionDelay"
+                }
+              ]
+            },
+            "order": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Action order",
+              "example": 0
+            }
+          }
+        },
+        "EventCondtionGateway": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "online",
+                "offline"
+              ],
+              "description": "Gateway or LDSU status",
+              "example": "online"
+            },
+            "for_": {
+              "type": "integer",
+              "minimum": 5,
+              "maximum": 3600,
+              "description": "Condition hold for how long in seconds",
+              "example": 10
+            },
+            "gateway_id": {
+              "type": "string",
+              "description": "Gateway ID",
+              "example": "PH80XXRR06072157205"
+            }
+          },
+          "required": [
+            "for_",
+            "gateway_id",
+            "status"
+          ]
+        },
+        "EventCondtionLdsu": {
+          "type": "object",
+          "properties": {
+            "device_id": {
+              "type": "string",
+              "description": "Device ID",
+              "example": "PH80XXRR0607215720500"
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "online",
+                "offline"
+              ],
+              "description": "Gateway or LDSU status",
+              "example": "online"
+            },
+            "for_": {
+              "type": "integer",
+              "minimum": 5,
+              "maximum": 3600,
+              "description": "Condition hold for how long in seconds",
+              "example": 10
+            },
+            "gateway_id": {
+              "type": "string",
+              "description": "Gateway ID",
+              "example": "PH80XXRR06072157205"
+            }
+          },
+          "required": [
+            "device_id",
+            "for_",
+            "gateway_id",
+            "status"
+          ]
+        },
+        "EventCondtionSensor": {
+          "type": "object",
+          "properties": {
+            "thresholds": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 2,
+              "description": "Thresholds",
+              "example": [
+                50.5,
+                100.1
+              ],
+              "items": {
+                "type": "number"
+              }
+            },
+            "said": {
+              "type": "integer",
+              "description": "Sensor index",
+              "example": 0
+            },
+            "for_": {
+              "type": "integer",
+              "minimum": 5,
+              "maximum": 3600,
+              "description": "Condition hold for how long in seconds",
+              "example": 10
+            },
+            "gateway_id": {
+              "type": "string",
+              "description": "Gateway ID",
+              "example": "PH80XXRR06072157205"
+            },
+            "operator": {
+              "type": "string",
+              "enum": [
+                ">",
+                "<",
+                "==",
+                "in",
+                "not in"
+              ],
+              "description": "Operator",
+              "example": "in"
+            },
+            "device_id": {
+              "type": "string",
+              "description": "Device ID",
+              "example": "PH80XXRR0607215720500"
+            }
+          },
+          "required": [
+            "device_id",
+            "for_",
+            "gateway_id",
+            "operator",
+            "said",
+            "thresholds"
+          ]
+        },
+        "EventActionSms": {
+          "type": "object",
+          "properties": {
+            "recipients": {
+              "type": "array",
+              "minItems": 1,
+              "description": "List of organization members",
+              "example": [
+                "abc@xyz.com",
+                "xyz@abc.com"
+              ],
+              "items": {
+                "type": "string",
+                "format": "email"
+              }
+            },
+            "content": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 280,
+              "description": "Content",
+              "example": "Turn on air conditioner."
+            }
+          },
+          "required": [
+            "content",
+            "recipients"
+          ]
+        },
+        "EventActionEmail": {
+          "type": "object",
+          "properties": {
+            "recipients": {
+              "type": "array",
+              "minItems": 1,
+              "description": "List of organization members",
+              "example": [
+                "abc@xyz.com",
+                "xyz@abc.com"
+              ],
+              "items": {
+                "type": "string",
+                "format": "email"
+              }
+            },
+            "content": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096,
+              "description": "Content",
+              "example": "Turn on the fan."
+            },
+            "subject": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 280,
+              "description": "Subject",
+              "example": "Over Temperature"
+            }
+          },
+          "required": [
+            "content",
+            "recipients",
+            "subject"
+          ]
+        },
+        "EventActionPush": {
+          "type": "object",
+          "properties": {
+            "recipients": {
+              "type": "array",
+              "minItems": 1,
+              "description": "List of organization members",
+              "example": [
+                "abc@xyz.com",
+                "xyz@abc.com"
+              ],
+              "items": {
+                "type": "string",
+                "format": "email"
+              }
+            },
+            "content": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 280,
+              "description": "Content",
+              "example": "Turn on air conditioner."
+            },
+            "subject": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 280,
+              "description": "Subject",
+              "example": "Over Temperature"
+            }
+          },
+          "required": [
+            "content",
+            "recipients",
+            "subject"
+          ]
+        },
+        "EventActionActuator": {
+          "type": "object",
+          "properties": {
+            "said": {
+              "type": "integer",
+              "description": "Actuator index",
+              "example": 0
+            },
+            "device_id": {
+              "type": "string",
+              "description": "Device ID",
+              "example": "PH80XXRR0607215720500"
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "on",
+                "off"
+              ],
+              "description": "Target actuator status",
+              "example": "on"
+            },
+            "gateway_id": {
+              "type": "string",
+              "description": "Gateway ID",
+              "example": "PH80XXRR06072157205"
+            }
+          },
+          "required": [
+            "device_id",
+            "gateway_id",
+            "said",
+            "status"
+          ]
+        },
+        "EventActionDelay": {
+          "type": "object",
+          "properties": {
+            "seconds": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 3600,
+              "description": "Delay in seconds",
+              "example": 60
+            }
+          },
+          "required": [
+            "seconds"
+          ]
+        }
+      },
+      "securitySchemes": {
+        "AccessToken": {
+          "type": "http",
+          "description": "AWS Cognito access token in header",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
+      }
+    }
+  }

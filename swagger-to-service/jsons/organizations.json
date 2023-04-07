@@ -1,0 +1,2749 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Organization api document",
+    "description": "Backend Organization application",
+    "version": "1.5.9-64",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "OrganizationInformationDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "ownerNameDisplay": {
+            "type": "string"
+          },
+          "nickName": {
+            "type": "string"
+          }
+        },
+        "required": ["name"]
+      },
+      "CreatingOrganizationDto": {
+        "type": "object",
+        "properties": {
+          "information": {
+            "$ref": "#/components/schemas/OrganizationInformationDto"
+          },
+          "isPrimary": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": ["information"]
+      },
+      "OrganizationResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "ownerID": {
+            "type": "string"
+          },
+          "information": {
+            "$ref": "#/components/schemas/OrganizationInformationDto"
+          },
+          "isPrimary": {
+            "type": "boolean"
+          }
+        },
+        "required": ["id", "ownerID", "information", "isPrimary"]
+      },
+      "DocumentOrganizationResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The message of response"
+          },
+          "statusCode": {
+            "type": "number",
+            "description": "Status code can be optional"
+          },
+          "data": {
+            "$ref": "#/components/schemas/OrganizationResponse"
+          }
+        },
+        "required": ["message", "data"]
+      },
+      "DocumentListingOrganizationResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The message of response"
+          },
+          "statusCode": {
+            "type": "number",
+            "description": "Status code can be optional"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrganizationResponse"
+            }
+          }
+        },
+        "required": ["message", "data"]
+      },
+      "UpdatingCustomizeOrganizationDto": {
+        "type": "object",
+        "properties": {
+          "information": {
+            "$ref": "#/components/schemas/OrganizationInformationDto"
+          }
+        },
+        "required": ["information"]
+      },
+      "DocumentBooleanBodyResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The message of response"
+          },
+          "statusCode": {
+            "type": "number",
+            "description": "Status code can be optional"
+          },
+          "data": {
+            "type": "boolean",
+            "description": "Result"
+          }
+        },
+        "required": ["message"]
+      },
+      "InvitingMemberDto": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "description": "List email of user",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "SubInvitationResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["Accepted", "Declined", "Pending", "Cancel"]
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "invitedBy": {
+            "type": "string"
+          }
+        },
+        "required": ["id", "status", "updatedAt", "createdAt", "invitedBy"]
+      },
+      "SubUserInformationResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": ["id", "name"]
+      },
+      "MemberResponse": {
+        "type": "object",
+        "properties": {
+          "organizationID": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "invitation": {
+            "$ref": "#/components/schemas/SubInvitationResponse"
+          },
+          "userInformation": {
+            "$ref": "#/components/schemas/SubUserInformationResponse"
+          },
+          "name": {
+            "type": "string"
+          },
+          "isOwner": {
+            "type": "boolean"
+          },
+          "email": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "organizationID",
+          "id",
+          "invitation",
+          "userInformation",
+          "name",
+          "isOwner",
+          "email"
+        ]
+      },
+      "DocumentListingMemberResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The message of response"
+          },
+          "statusCode": {
+            "type": "number",
+            "description": "Status code can be optional"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MemberResponse"
+            }
+          }
+        },
+        "required": ["message", "data"]
+      },
+      "RemovingMembersDto": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "description": "List of memberID",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "CreatingPrimaryOrganizationDto": {
+        "type": "object",
+        "properties": {
+          "userEmail": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": ["userEmail"]
+      },
+      "CreatingCustomizeRoleDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Notice: It is used for automation test only"
+          },
+          "name": {
+            "type": "string"
+          },
+          "organizationID": {
+            "type": "string"
+          },
+          "isDefault": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": ["name", "organizationID"]
+      },
+      "RoleResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "organizationID": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updateAt": {
+            "type": "string"
+          },
+          "isDefault": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "organizationID",
+          "createdAt",
+          "updateAt",
+          "isDefault"
+        ]
+      },
+      "DocumentRoleResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The message of response"
+          },
+          "statusCode": {
+            "type": "number",
+            "description": "Status code can be optional"
+          },
+          "data": {
+            "$ref": "#/components/schemas/RoleResponse"
+          }
+        },
+        "required": ["message", "data"]
+      },
+      "UpdatingCustomizeRoleDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "isDefault": {
+            "type": "boolean"
+          }
+        },
+        "required": ["name"]
+      },
+      "DocumentListingRoleResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The message of response"
+          },
+          "statusCode": {
+            "type": "number",
+            "description": "Status code can be optional"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RoleResponse"
+            }
+          }
+        },
+        "required": ["message", "data"]
+      },
+      "PermissionResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "displayOrder": {
+            "type": "number"
+          }
+        },
+        "required": ["id", "name", "displayOrder"]
+      },
+      "DocumentListingPermissionResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The message of response"
+          },
+          "statusCode": {
+            "type": "number",
+            "description": "Status code can be optional"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PermissionResponse"
+            }
+          }
+        },
+        "required": ["message", "data"]
+      },
+      "AddingPermissionsToRoleDto": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "description": "List of permissionID",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "CreatingCustomizeUserGroupDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Notice: It is used for automation test only"
+          },
+          "name": {
+            "type": "string"
+          },
+          "organizationID": {
+            "type": "string"
+          },
+          "isDefault": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": ["name", "organizationID"]
+      },
+      "UserGroupResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "organizationID": {
+            "type": "string"
+          },
+          "isDefault": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updateAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "organizationID",
+          "isDefault",
+          "createdAt",
+          "updateAt"
+        ]
+      },
+      "DocumentUserGroupResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The message of response"
+          },
+          "statusCode": {
+            "type": "number",
+            "description": "Status code can be optional"
+          },
+          "data": {
+            "$ref": "#/components/schemas/UserGroupResponse"
+          }
+        },
+        "required": ["message", "data"]
+      },
+      "DocumentListingUserGroupResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The message of response"
+          },
+          "statusCode": {
+            "type": "number",
+            "description": "Status code can be optional"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserGroupResponse"
+            }
+          }
+        },
+        "required": ["message", "data"]
+      },
+      "UpdatingCustomizeUserGroupDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "AssigningRoleToCustomizeUserGroupDto": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "description": "List of roleID",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "AddingRemovingUsersToUserGroupDto": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "description": "List of memberID",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "UpdatingInvitationStatusDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["Accepted", "Declined", "Pending"]
+          }
+        },
+        "required": ["status"]
+      },
+      "WriteSuccessfulDocumentResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The message of response"
+          },
+          "statusCode": {
+            "type": "number",
+            "description": "Status code can be optional"
+          },
+          "data": {
+            "type": "boolean"
+          }
+        },
+        "required": ["message", "data"]
+      },
+      "InvitationResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "organizationName": {
+            "type": "string"
+          },
+          "organizationID": {
+            "type": "string"
+          },
+          "invitedOn": {
+            "type": "string"
+          },
+          "ownerName": {
+            "type": "string"
+          },
+          "invitedBy": {
+            "type": "string"
+          },
+          "memberEmail": {
+            "type": "string"
+          },
+          "memberID": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "organizationName",
+          "organizationID",
+          "invitedOn",
+          "ownerName",
+          "invitedBy",
+          "memberEmail",
+          "memberID",
+          "status"
+        ]
+      },
+      "DocumentInvitationResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The message of response"
+          },
+          "statusCode": {
+            "type": "number",
+            "description": "Status code can be optional"
+          },
+          "data": {
+            "$ref": "#/components/schemas/InvitationResponse"
+          }
+        },
+        "required": ["message", "data"]
+      },
+      "DocumentListingInvitationResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The message of response"
+          },
+          "statusCode": {
+            "type": "number",
+            "description": "Status code can be optional"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InvitationResponse"
+            }
+          }
+        },
+        "required": ["message", "data"]
+      },
+      "PermissionGroupResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "totalPermissions": {
+            "type": "number"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "displayOrder": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "totalPermissions",
+          "createdAt",
+          "updatedAt",
+          "description",
+          "displayOrder"
+        ]
+      },
+      "DocumentPermissionGroupsResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The message of response"
+          },
+          "statusCode": {
+            "type": "number",
+            "description": "Status code can be optional"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PermissionGroupResponse"
+            }
+          }
+        },
+        "required": ["message", "data"]
+      }
+    }
+  },
+  "paths": {
+    "/organizations/test": {
+      "get": {
+        "operationId": "test",
+        "summary": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": ["Organizations"]
+      }
+    },
+    "/organizations": {
+      "post": {
+        "operationId": "createOrg",
+        "summary": "",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatingOrganizationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Return created organization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentOrganizationResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Organizations"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "searchOrgs",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search by name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return list of organizations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentListingOrganizationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the request has some problem, the status code will be return 400"
+          },
+          "500": {
+            "description": "Some wrong with server"
+          }
+        },
+        "tags": ["Organizations"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/organizations/{id}": {
+      "get": {
+        "operationId": "getOrgById",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return detail of organization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentOrganizationResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Organizations"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "updateOrg",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatingCustomizeOrganizationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Return detail of organization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Organizations"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "deleteOrg",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete organization, it also remove members, roles, user-groups of organization. It does not remove users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentBooleanBodyResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Organizations"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/organizations/{id}/get-owner": {
+      "get": {
+        "operationId": "getOwnerEmailById",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return owner email of organization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentOrganizationResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Organizations"]
+      }
+    },
+    "/organizations/{id}/checking": {
+      "delete": {
+        "operationId": "checkDeleted",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Checking delete organization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentBooleanBodyResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Organizations"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/organizations/{id}/users": {
+      "post": {
+        "operationId": "inviteUserToOrg",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvitingMemberDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Invite members",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentBooleanBodyResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Organizations"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "listMembers",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "search by name or email",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": ["Accepted", "Declined", "Pending", "Cancel"],
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Paging",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Maximum is 10000 and Minimum is 1. Default value is 20",
+            "schema": {
+              "minimum": 1,
+              "maximum": 10000,
+              "default": 20,
+              "type": "number"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return list of member of organization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentListingMemberResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Organizations"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "removeMembers",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemovingMembersDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Return list of result (true/false). It remove normal user, it does not remove owner",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentBooleanBodyResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Organizations"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/organizations/{id}/users/{userID}/user-groups": {
+      "get": {
+        "operationId": "listUserGroupsById",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userID",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "search by name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isDefault",
+            "required": false,
+            "in": "query",
+            "description": "search for default group",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Paging",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Maximum is 10000 and Minimum is 1. Default value is 20",
+            "schema": {
+              "minimum": 1,
+              "maximum": 10000,
+              "default": 20,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return list of group-users of userID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentListingMemberResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Organizations"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/internal/organizations/primary": {
+      "post": {
+        "operationId": "createDefaultOrg",
+        "summary": "",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatingPrimaryOrganizationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Return created organization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentOrganizationResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Internal"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/internal/organizations/{id}": {
+      "delete": {
+        "operationId": "deleteOrgById",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete organization, it also remove members, roles, user-groups of organization. It does not remove users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentBooleanBodyResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Internal"]
+      }
+    },
+    "/internal/user/{email}/clean-up": {
+      "delete": {
+        "operationId": "cleanUpMembersByEmail",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "email",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "clean up when delete user by email",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentBooleanBodyResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Internal"]
+      }
+    },
+    "/members/{id}": {
+      "get": {
+        "operationId": "listMembersById",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the list of member",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Members"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/roles": {
+      "post": {
+        "operationId": "createRole",
+        "summary": "",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatingCustomizeRoleDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Return created role",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentRoleResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the request has some problem, the status code will be return 400"
+          },
+          "500": {
+            "description": "Some wrong with server"
+          }
+        },
+        "tags": ["Roles"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "searchRoles",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "search by name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "groupID",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "organizations",
+            "required": false,
+            "in": "query",
+            "description": "Filter by organizationID. List of organizationID",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "isDefault",
+            "required": false,
+            "in": "query",
+            "description": "search for default roles",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return list of role",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentListingRoleResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Roles"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/roles/{id}": {
+      "patch": {
+        "operationId": "updateRole",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatingCustomizeRoleDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Return updated role",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentRoleResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the request has some problem, the status code will be return 400"
+          },
+          "500": {
+            "description": "Some wrong with server"
+          }
+        },
+        "tags": ["Roles"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "deleteRole",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return true/false",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentBooleanBodyResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Roles"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "getRoleById",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return role",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentRoleResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Roles"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/roles/{id}/permissions": {
+      "get": {
+        "operationId": "listPermissions",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return list of permissions of role",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentListingPermissionResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Roles"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "post": {
+        "operationId": "addPermissions",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddingPermissionsToRoleDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Return true/false to indicate successful/failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentBooleanBodyResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the request has some problem, the status code will be return 400"
+          },
+          "500": {
+            "description": "Some wrong with server"
+          }
+        },
+        "tags": ["Roles"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "removePermissions",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddingPermissionsToRoleDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Return true/false to indicate successful/failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentBooleanBodyResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the request has some problem, the status code will be return 400"
+          },
+          "500": {
+            "description": "Some wrong with server"
+          }
+        },
+        "tags": ["Roles"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/user-groups": {
+      "post": {
+        "operationId": "createUserGroup",
+        "summary": "",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatingCustomizeUserGroupDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Return created user group",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentUserGroupResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the request has some problem, the status code will be return 400"
+          },
+          "500": {
+            "description": "Some wrong with server"
+          }
+        },
+        "tags": ["UserGroups"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "searchUserGroups",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "search by name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "organizationID",
+            "required": false,
+            "in": "query",
+            "description": "search for specific organization",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "identities",
+            "required": false,
+            "in": "query",
+            "description": "search for specific identities",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "isDefault",
+            "required": false,
+            "in": "query",
+            "description": "search for default group",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Paging",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Maximum is 10000 and Minimum is 1. Default value is 20",
+            "schema": {
+              "minimum": 1,
+              "maximum": 10000,
+              "default": 20,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return list of user groups",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentListingUserGroupResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the request has some problem, the status code will be return 400"
+          },
+          "500": {
+            "description": "Some wrong with server"
+          }
+        },
+        "tags": ["UserGroups"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/user-groups/{id}": {
+      "get": {
+        "operationId": "getUserGroup",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return user group",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentListingUserGroupResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the request has some problem, the status code will be return 400"
+          },
+          "500": {
+            "description": "Some wrong with server"
+          }
+        },
+        "tags": ["UserGroups"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "updateUserGroup",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatingCustomizeUserGroupDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Return user group",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentUserGroupResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the request has some problem, the status code will be return 400"
+          },
+          "500": {
+            "description": "Some wrong with server"
+          }
+        },
+        "tags": ["UserGroups"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "deleteUserGroup",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return true/false",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentBooleanBodyResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the request has some problem, the status code will be return 400"
+          },
+          "500": {
+            "description": "Some wrong with server"
+          }
+        },
+        "tags": ["UserGroups"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/user-groups/{id}/roles": {
+      "post": {
+        "operationId": "assignRoles",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssigningRoleToCustomizeUserGroupDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Return true/false",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the request has some problem, the status code will be return 400"
+          },
+          "500": {
+            "description": "Some wrong with server"
+          }
+        },
+        "tags": ["UserGroups"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "leaveRoles",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssigningRoleToCustomizeUserGroupDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Return true/false",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentBooleanBodyResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the request has some problem, the status code will be return 400"
+          },
+          "500": {
+            "description": "Some wrong with server"
+          }
+        },
+        "tags": ["UserGroups"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "UserGroupController_getListRolesForUserGroup",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return list of roles assigned to user group",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentListingRoleResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["UserGroups"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/user-groups/{id}/members": {
+      "get": {
+        "operationId": "listMembers",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "search by name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Paging",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Maximum is 10000 and Minimum is 1. Default value is 20",
+            "schema": {
+              "minimum": 1,
+              "maximum": 10000,
+              "default": 20,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return list of users which are added to user group",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentListingMemberResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["UserGroups"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "post": {
+        "operationId": "assignMembers",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddingRemovingUsersToUserGroupDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Return true/false",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentBooleanBodyResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the request has some problem, the status code will be return 400"
+          },
+          "500": {
+            "description": "Some wrong with server"
+          }
+        },
+        "tags": ["UserGroups"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "removeMembers",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddingRemovingUsersToUserGroupDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Return true/false",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentBooleanBodyResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the request has some problem, the status code will be return 400"
+          },
+          "500": {
+            "description": "Some wrong with server"
+          }
+        },
+        "tags": ["UserGroups"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/invitations/{id}": {
+      "patch": {
+        "operationId": "updateStatus",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Body of update status",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatingInvitationStatusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Return body response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WriteSuccessfulDocumentResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the request has some problem, the status code will be return 400"
+          },
+          "500": {
+            "description": "When saving to database or something problem"
+          }
+        },
+        "tags": ["Invitations"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "getInvitation",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Return action response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentInvitationResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "If the action does not existed, the status code will be return 404"
+          }
+        },
+        "tags": ["Invitations"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/invitations": {
+      "get": {
+        "operationId": "searchInvitations",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "invitedBy",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "invitedEmail",
+            "required": false,
+            "in": "query",
+            "description": "email of user who is invited",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "organizationID",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Return action response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentListingInvitationResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "If the action does not existed, the status code will be return 404"
+          }
+        },
+        "tags": ["Invitations"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/invitations/{memberID}/reinvite": {
+      "post": {
+        "operationId": "reInviteMember",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "memberID",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Return body response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WriteSuccessfulDocumentResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the request has some problem, the status code will be return 400"
+          },
+          "500": {
+            "description": "When saving to database or something problem"
+          }
+        },
+        "tags": ["Invitations"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/users/{email}/organizations": {
+      "get": {
+        "operationId": "searchOrgOwnedByEmail",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "email",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Return body response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentListingOrganizationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the request has some problem, the status code will be return 400"
+          },
+          "500": {
+            "description": "Some wrong with server"
+          }
+        },
+        "tags": ["Users"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/users/{email}/organizations/{organizationID}": {
+      "delete": {
+        "operationId": "leaveOrgByEmail",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "email",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "organizationID",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return body response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentBooleanBodyResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Some wrong with server"
+          }
+        },
+        "tags": ["Users"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/users/{email}/invitations": {
+      "get": {
+        "operationId": "listInvitation",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "email",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Return body response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentListingInvitationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the request has some problem, the status code will be return 400"
+          },
+          "500": {
+            "description": "Some wrong with server"
+          }
+        },
+        "tags": ["Users"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/permissions": {
+      "get": {
+        "operationId": "searchPermissions",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "actionGroupID",
+            "required": false,
+            "in": "query",
+            "description": "Filter by actionGroupID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "resourceGroupID",
+            "required": false,
+            "in": "query",
+            "description": "Filter by resourceGroupID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "roleID",
+            "required": false,
+            "in": "query",
+            "description": "Filter by roleID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "permissionIDs",
+            "required": false,
+            "in": "query",
+            "description": "Filter by permissionIDs",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Return body response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentListingPermissionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the request has some problem, the status code will be return 404"
+          },
+          "500": {
+            "description": "When saving to database or something problem"
+          }
+        },
+        "tags": ["Permissions"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/permissions/{organizationID}/{resourceID}/{actionID}/{refID}": {
+      "get": {
+        "operationId": "checkPes",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "refID",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "organizationID",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "actionID",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "resourceID",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Check pes API"
+          }
+        },
+        "tags": ["Permissions"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/permission-groups": {
+      "get": {
+        "operationId": "searchPermissionGroups",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Return body response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentPermissionGroupsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the request has some problem, the status code will be return 404"
+          },
+          "500": {
+            "description": "When saving to database or something problem"
+          }
+        },
+        "tags": ["Permission Groups"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/permission-groups/{id}/permissions": {
+      "get": {
+        "operationId": "listPermissionsById",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Return body response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentListingPermissionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the request has some problem, the status code will be return 404"
+          },
+          "500": {
+            "description": "When saving to database or something problem"
+          }
+        },
+        "tags": ["Permission Groups"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/authorization/config": {
+      "get": {
+        "operationId": "getConfig",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "organizationID",
+            "required": false,
+            "in": "query",
+            "description": "get config by organizationID & user",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "get user pes config API"
+          }
+        },
+        "tags": ["Authorization"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    }
+  }
+}

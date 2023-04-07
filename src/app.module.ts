@@ -4,6 +4,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { YogaDriver, YogaDriverConfig } from '@graphql-yoga/nestjs';
 import { GraphQLModule } from '@nestjs/graphql';
+import { SwaggerService } from './swagger.service';
+import { TestModule } from './test/test.module';
 
 @Module({
   imports: [
@@ -14,8 +16,9 @@ import { GraphQLModule } from '@nestjs/graphql';
       driver: YogaDriver,
       autoSchemaFile: 'schema.gql',
     }),
+    TestModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, SwaggerService],
 })
 export class AppModule {}

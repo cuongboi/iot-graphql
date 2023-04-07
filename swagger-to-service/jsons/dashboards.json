@@ -1,0 +1,6266 @@
+{
+    "info": {
+      "description": "IOT Portal Dashboard Swagger doc",
+      "title": "IOT Portal Dashboard",
+      "version": "0.0.1"
+    },
+    "security": [
+      {
+        "AccessToken": []
+      }
+    ],
+    "paths": {
+      "/dashboards": {
+        "get": {
+          "tags": [
+            "dashboard"
+          ],
+          "summary": "Get all dashboards of specified organization",
+          "parameters": [
+            {
+              "name": "organization_id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "in": "query",
+              "description": "Organization ID"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Dashboard info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Dashboard"
+                        }
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "dashboard"
+          ],
+          "summary": "Create a new dashboard",
+          "requestBody": {
+            "description": "New dashboard info",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardPost"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "The new dashboard info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/Dashboard"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/dashboards/{dashboard_uuid}": {
+        "delete": {
+          "tags": [
+            "dashboard"
+          ],
+          "summary": "Delete dashboard info by uuid",
+          "parameters": [
+            {
+              "name": "dashboard_uuid",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Dashboard ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Delete dashboard info succeeded"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "get": {
+          "tags": [
+            "dashboard"
+          ],
+          "summary": "Get dashboard info by uuid",
+          "parameters": [
+            {
+              "name": "dashboard_uuid",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Dashboard ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Dashboard info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/Dashboard"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "patch": {
+          "tags": [
+            "dashboard"
+          ],
+          "summary": "Update dashboard info by uuid",
+          "parameters": [
+            {
+              "name": "dashboard_uuid",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Dashboard ID",
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "Dashboard info to update",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardPatch"
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "Update dashboard info succeeded"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/dashboards/{dashboard_uuid}/panels_v2": {
+        "get": {
+          "tags": [
+            "panel"
+          ],
+          "summary": "Get all panels of specified dashboard",
+          "parameters": [
+            {
+              "name": "dashboard_uuid",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Dashboard ID",
+              "required": true
+            },
+            {
+              "name": "source",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "GATEWAY",
+                  "SENSOR",
+                  "ACTUATOR",
+                  "OTHER"
+                ]
+              },
+              "in": "query",
+              "description": "Filtering option"
+            },
+            {
+              "name": "name_only",
+              "required": false,
+              "schema": {
+                "type": "boolean"
+              },
+              "in": "query",
+              "description": "Request for panel name only"
+            },
+            {
+              "name": "offset",
+              "required": false,
+              "schema": {
+                "type": "integer"
+              },
+              "in": "query",
+              "description": "Offset for paginated result"
+            },
+            {
+              "name": "limit",
+              "required": false,
+              "schema": {
+                "type": "integer"
+              },
+              "in": "query",
+              "description": "Limit for paginated result"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Panel info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/PanelV2"
+                        }
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "panel"
+          ],
+          "summary": "Create a new panel in specified dashboard",
+          "parameters": [
+            {
+              "name": "dashboard_uuid",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Dashboard ID",
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "New panel info",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PanelV2Post"
+                },
+                "examples": {
+                  "Sensor Chart": {
+                    "summary": "Sensor data",
+                    "value": {
+                      "name": "Sensor data",
+                      "source": "SENSOR",
+                      "chart": "TIME",
+                      "attributes": [
+                        {
+                          "gateway_id": "PH80XXRR06072157205",
+                          "device_id": "PH80XXRR0607215720507",
+                          "said": 0,
+                          "time_series": "mqtt2tsdb_temperature_degree_c",
+                          "name": "Temperature",
+                          "color": null,
+                          "unit": "C",
+                          "show_alert": false
+                        }
+                      ]
+                    }
+                  },
+                  "Actuator Chart": {
+                    "summary": "Actuator data",
+                    "value": {
+                      "name": "Actuator data",
+                      "source": "ACTUATOR",
+                      "chart": "TIME",
+                      "attributes": [
+                        {
+                          "gateway_id": "PH80XXRR06072157205",
+                          "device_id": "PH80XXRR0607215720513",
+                          "said": 1,
+                          "time_series": "mqtt2tsdb_relayswitch_na",
+                          "name": "Relay Switch",
+                          "color": null,
+                          "unit": "na",
+                          "show_alert": false
+                        }
+                      ]
+                    }
+                  },
+                  "Gateway Chart": {
+                    "summary": "Gateway status",
+                    "value": {
+                      "name": "Gateway status",
+                      "source": "GATEWAY",
+                      "chart": "PIE",
+                      "attributes": [
+                        {
+                          "type_": "STATUS",
+                          "gateway_id": "PH80XXRR06072157205"
+                        }
+                      ]
+                    }
+                  },
+                  "Other Chart": {
+                    "summary": "Count of alert",
+                    "value": {
+                      "name": "Count of alert",
+                      "source": "OTHER",
+                      "chart": "?",
+                      "attributes": [
+                        {
+                          "type_": "COUNT_ALERT",
+                          "organization_id": "45f41ae7-ac54-4ec2-a8a8-2f18b69058c1"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "The new panel info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/PanelV2"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/dashboards/{dashboard_uuid}/panels_v2/{panel_uuid}": {
+        "delete": {
+          "tags": [
+            "panel"
+          ],
+          "summary": "Delete panel info by uuid",
+          "parameters": [
+            {
+              "name": "dashboard_uuid",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Dashboard ID",
+              "required": true
+            },
+            {
+              "name": "panel_uuid",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Panel ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Delete panel info succeeded"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "get": {
+          "tags": [
+            "panel"
+          ],
+          "summary": "Get panel info by uuid",
+          "description": "Get current user's panel info by uuid",
+          "parameters": [
+            {
+              "name": "dashboard_uuid",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Dashboard ID",
+              "required": true
+            },
+            {
+              "name": "panel_uuid",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Panel ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Panel info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/PanelV2"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "patch": {
+          "tags": [
+            "panel"
+          ],
+          "summary": "Update panel info by uuid",
+          "parameters": [
+            {
+              "name": "dashboard_uuid",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Dashboard ID",
+              "required": true
+            },
+            {
+              "name": "panel_uuid",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Panel ID",
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "Panel info to update",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PanelV2Patch"
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "Update panel info succeeded"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/takeout": {
+        "get": {
+          "tags": [
+            "takeout"
+          ],
+          "summary": "Get all takeout task info of specified gateway",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Takeout task info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Takeout"
+                        }
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "takeout"
+          ],
+          "summary": "Create a new takeout task for specified gateway",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "New takeout task info",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TakeoutPost"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "The new takeout task info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/Takeout"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/takeout/{takeout_uuid}": {
+        "get": {
+          "tags": [
+            "takeout"
+          ],
+          "summary": "Get takeout task info by uuid",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            },
+            {
+              "name": "takeout_uuid",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Takeout task ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Takeout task info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/Takeout"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/deletion": {
+        "get": {
+          "tags": [
+            "deletion"
+          ],
+          "summary": "Get all deletion task info of specified gateway",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Deletion task info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Deletion"
+                        }
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "deletion"
+          ],
+          "summary": "Create a new deletion task for specified gateway",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "New deletion task info",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletionPost"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "The new deletion task info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/Deletion"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/deletion/{deletion_uuid}": {
+        "get": {
+          "tags": [
+            "deletion"
+          ],
+          "summary": "Get deletion task info by uuid",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            },
+            {
+              "name": "deletion_uuid",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Deletion task ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Deletion task info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/Deletion"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/timerange": {
+        "get": {
+          "tags": [
+            "timerange"
+          ],
+          "summary": "Get available time ranges for deletion task",
+          "responses": {
+            "200": {
+              "description": "Deletion time range",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/TimeRange"
+                        }
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/gateways/registry": {
+        "get": {
+          "tags": [
+            "registry"
+          ],
+          "summary": "Get all registered gateway info",
+          "parameters": [
+            {
+              "name": "organization_id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "in": "query",
+              "description": "Organization ID"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Gateway info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Registry"
+                        }
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "registry"
+          ],
+          "summary": "Register a new gateway",
+          "requestBody": {
+            "description": "Gateway info",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistryPost"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Gateway info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/Registry"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/registry": {
+        "delete": {
+          "tags": [
+            "registry"
+          ],
+          "summary": "Delete gateway info by ID",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Delete gateway info succeeded"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "get": {
+          "tags": [
+            "registry"
+          ],
+          "summary": "Get registered gateway info by ID",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Gateway info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/Registry"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "patch": {
+          "tags": [
+            "registry"
+          ],
+          "summary": "Update gateway info by ID",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "Gateway info to update",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistryPatch"
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "Update gateway info succeeded"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/{device_id}/registry": {
+        "delete": {
+          "tags": [
+            "registry"
+          ],
+          "summary": "Delete device info by ID",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            },
+            {
+              "name": "device_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Device ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Delete device info succeeded"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/bus/{port}/registry": {
+        "delete": {
+          "tags": [
+            "registry"
+          ],
+          "summary": "Delete device info by port number",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            },
+            {
+              "name": "port",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Port/LDSU bus number",
+              "required": true
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Delete device info succeeded"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/info": {
+        "get": {
+          "tags": [
+            "info"
+          ],
+          "summary": "Get all gateway info",
+          "parameters": [
+            {
+              "name": "organization_id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "in": "query",
+              "description": "Organization ID"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Gateway info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Gateway"
+                        }
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/info": {
+        "get": {
+          "tags": [
+            "info"
+          ],
+          "summary": "Get gateway info by ID",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Gateway info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/Gateway"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "info"
+          ],
+          "summary": "Request to update device info",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "Update device info request",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceInfoPost"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Request status",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "string",
+                        "description": "Request status"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/uart": {
+        "get": {
+          "tags": [
+            "config"
+          ],
+          "summary": "Get gateway UART config by ID",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Gateway UART config",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/UartConfig"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "404": {
+              "description": "No data available"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "config"
+          ],
+          "summary": "Change gateway UART config by ID",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "Gateway info",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UartConfigPost"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Gateway UART config",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/UartConfig"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/config": {
+        "get": {
+          "tags": [
+            "config"
+          ],
+          "summary": "Get gateway config by ID",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The gateway config",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/DeviceConfig"
+                        }
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/{device_id}/config": {
+        "get": {
+          "tags": [
+            "config device"
+          ],
+          "summary": "Get device config by ID",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            },
+            {
+              "name": "device_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Device ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The device config",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/DeviceConfig"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "patch": {
+          "tags": [
+            "config device"
+          ],
+          "summary": "Change device config by ID",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            },
+            {
+              "name": "device_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Device ID",
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "Device config info",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceConfigPatch"
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "Update device config succeeded"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/{device_id}/{said}/config": {
+        "get": {
+          "tags": [
+            "config sensor"
+          ],
+          "summary": "Get sensor config by ID",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            },
+            {
+              "name": "device_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Device ID",
+              "required": true
+            },
+            {
+              "name": "said",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Sensor index",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The sensor config",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "patch": {
+          "tags": [
+            "config sensor"
+          ],
+          "summary": "Change sensor config by SAID",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            },
+            {
+              "name": "device_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Device ID",
+              "required": true
+            },
+            {
+              "name": "said",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Sensor index",
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "Sensor config info",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorConfigPatch"
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "Update sensor config succeeded"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/bus/{port}/config": {
+        "get": {
+          "tags": [
+            "config device"
+          ],
+          "summary": "Get device config by port number",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            },
+            {
+              "name": "port",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Port/LDSU bus number",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The device config with specified port number",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/DeviceConfig"
+                        }
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "patch": {
+          "tags": [
+            "config device"
+          ],
+          "summary": "Change device config by port number",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            },
+            {
+              "name": "port",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Port/LDSU bus number",
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "Device cinfig info",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DevicesConfigPatch"
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "Update devices' config succeeded"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/{device_id}/{said}/command": {
+        "get": {
+          "tags": [
+            "config actuator"
+          ],
+          "summary": "Get actuator command config by SAID",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            },
+            {
+              "name": "device_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Device ID",
+              "required": true
+            },
+            {
+              "name": "said",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Actuator index",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Actuator command config info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/ActuatorCommand"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "patch": {
+          "tags": [
+            "config actuator"
+          ],
+          "summary": "Change actuator command config by SAID",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            },
+            {
+              "name": "device_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Device ID",
+              "required": true
+            },
+            {
+              "name": "said",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Actuator index",
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "Actuator command config info",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActuatorCommandPatch"
+                },
+                "examples": {
+                  "Analog output": {
+                    "summary": "Analog output config",
+                    "value": {
+                      "name": "Analog output",
+                      "enabled": true,
+                      "action_mode": "MANUAL",
+                      "value": 1.23
+                    }
+                  },
+                  "Digital output or Relay": {
+                    "summary": "Digital output config",
+                    "value": {
+                      "name": "Digital output",
+                      "enabled": true,
+                      "action_mode": "MANUAL",
+                      "config_mode": "STATIC"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Update actuator command succeeded",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/ActuatorCommand"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "config actuator"
+          ],
+          "summary": "Activate/deactivate actuator by SAID",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            },
+            {
+              "name": "device_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Device ID",
+              "required": true
+            },
+            {
+              "name": "said",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Actuator index",
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "Actuator status",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActuatorCommandPost"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Actuator command config info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/ActuatorCommand"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/config/reset": {
+        "post": {
+          "tags": [
+            "config"
+          ],
+          "summary": "Reset gateway config by ID",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Gateway config",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/DeviceConfig"
+                        }
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/{device_id}/config/reset": {
+        "post": {
+          "tags": [
+            "config device"
+          ],
+          "summary": "Reset LDSU config by ID",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            },
+            {
+              "name": "device_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Device ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Device config",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/DeviceConfig"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/status": {
+        "get": {
+          "tags": [
+            "status"
+          ],
+          "summary": "Get all gateways' status",
+          "parameters": [
+            {
+              "name": "organization_id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "in": "query",
+              "description": "Organization ID"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Gateway status",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/GatewayStatus"
+                        }
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/status": {
+        "get": {
+          "tags": [
+            "status"
+          ],
+          "summary": "Get gateway status by ID",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Gateway status",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/GatewayStatus"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "404": {
+              "description": "No data available"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "status"
+          ],
+          "summary": "Request to change gateway status by ID",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "Gateway status request",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GatewayStatusPost"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Request status",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "string",
+                        "description": "Request status"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/{device_id}/identify": {
+        "post": {
+          "tags": [
+            "status"
+          ],
+          "summary": "Request to trigger the device blinking LED by ID",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "in": "path",
+              "description": "Gateway ID",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            },
+            {
+              "name": "device_id",
+              "in": "path",
+              "description": "Device ID",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Request status",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "string",
+                        "description": "Request status"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/port": {
+        "get": {
+          "tags": [
+            "status"
+          ],
+          "summary": "Get port status",
+          "parameters": [
+            {
+              "name": "organization_id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "in": "query",
+              "description": "Organization ID"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Port status",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/PortStatus"
+                        }
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/port": {
+        "get": {
+          "tags": [
+            "status"
+          ],
+          "summary": "Get port status by ID",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Port status",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/PortStatus"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "404": {
+              "description": "No data available"
+            }
+          }
+        }
+      },
+      "/gateways/reading": {
+        "get": {
+          "tags": [
+            "status"
+          ],
+          "summary": "Get gateway reading for specified organization",
+          "parameters": [
+            {
+              "name": "organization_id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "in": "query",
+              "description": "Organization ID"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Gateway timestamp",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "description": "Gateway timestamp info"
+                        }
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/reading2": {
+        "get": {
+          "tags": [
+            "status"
+          ],
+          "summary": "Get devices' readings of specified gateway by ID",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Devices' reading",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        },
+                        "description": "Devices' reading info"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "404": {
+              "description": "No data available"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/bus/{port}/reading2": {
+        "get": {
+          "tags": [
+            "status"
+          ],
+          "summary": "Get devices' readings of specified gateway and port",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            },
+            {
+              "name": "port",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Port/LDSU bus number",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Devices' reading",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        },
+                        "description": "Devices' reading info"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "404": {
+              "description": "No data available"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/{device_id}/reading2": {
+        "get": {
+          "tags": [
+            "status"
+          ],
+          "summary": "Get device readings by ID",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            },
+            {
+              "name": "device_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Device ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Device reading",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "description": "Device reading info"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "404": {
+              "description": "No data available"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/message": {
+        "get": {
+          "tags": [
+            "message"
+          ],
+          "summary": "Get device config by ID",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Gateway message config",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/Message"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/message/email": {
+        "get": {
+          "tags": [
+            "message"
+          ],
+          "summary": "Get email message config",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Email message config",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/EmailMessage"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "patch": {
+          "tags": [
+            "message"
+          ],
+          "summary": "Update email message config",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "Email message config to update",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailMessagePatch"
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "Update email message config succeeded"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/message/sms": {
+        "get": {
+          "tags": [
+            "message"
+          ],
+          "summary": "Get SMS message config",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "SMS message config",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/SmsMessage"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "patch": {
+          "tags": [
+            "message"
+          ],
+          "summary": "Update SMS message config",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "SMS message config to update",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SmsMessagePatch"
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "Update sms message config succeeded"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/message/push": {
+        "get": {
+          "tags": [
+            "message"
+          ],
+          "summary": "Get push message config",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Push message config",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/PushMessage"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "patch": {
+          "tags": [
+            "message"
+          ],
+          "summary": "Update push message config",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "Push message config to update",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PushMessagePatch"
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "Update push message config succeeded"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gatewaygroups": {
+        "get": {
+          "tags": [
+            "group"
+          ],
+          "summary": "Get all gateway group",
+          "parameters": [
+            {
+              "name": "organization_id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "in": "query",
+              "description": "Organization ID"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Gateway group info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Group"
+                        }
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "group"
+          ],
+          "summary": "Create a new gateway group",
+          "requestBody": {
+            "description": "Gateway group info",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupPost"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Gateway group info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/Group"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gatewaygroups/{group_uuid}": {
+        "delete": {
+          "tags": [
+            "group"
+          ],
+          "summary": "Delete gateway group by ID",
+          "parameters": [
+            {
+              "name": "group_uuid",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Group ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Delete gateway group succeeded"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "get": {
+          "tags": [
+            "group"
+          ],
+          "summary": "Get gateway group by ID",
+          "parameters": [
+            {
+              "name": "group_uuid",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Group ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Gateway group info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/Group"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "patch": {
+          "tags": [
+            "group"
+          ],
+          "summary": "Update gateway group by ID",
+          "parameters": [
+            {
+              "name": "group_uuid",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Group ID",
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "Gateway group info to update",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GatewayGroupPatch"
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "Update gateway group succeeded"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/firmware": {
+        "get": {
+          "tags": [
+            "ota"
+          ],
+          "summary": "Get gateway firmware upgrade statue",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Gateway firmware upgrade statue",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/Ota"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "404": {
+              "description": "No data available"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "ota"
+          ],
+          "summary": "Request to upgrade gateway firmware",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "Gateway firmware info",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FirmwareVersion"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Gateway firmware upgrade statue",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/Ota"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gatewaygroups/{group_uuid}/firmware": {
+        "get": {
+          "tags": [
+            "ota"
+          ],
+          "summary": "Get gateway group firmware upgrade statue",
+          "parameters": [
+            {
+              "name": "group_uuid",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway group ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Gateway firmware upgrade statue",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Ota"
+                        }
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "404": {
+              "description": "No data available"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "ota"
+          ],
+          "summary": "Request to upgrade gateway group firmware",
+          "parameters": [
+            {
+              "name": "group_uuid",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway group ID",
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "Gateway group firmware upgrade statue",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupFirmwareVersion"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Gateway firmware info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Ota"
+                        }
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/alert": {
+        "get": {
+          "tags": [
+            "alert"
+          ],
+          "summary": "Get alerts by gateway ID",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Alert info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Alert"
+                        }
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/{device_id}/{said}/alert": {
+        "get": {
+          "tags": [
+            "alert"
+          ],
+          "summary": "Get alerts by SAID",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            },
+            {
+              "name": "device_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Device ID",
+              "required": true
+            },
+            {
+              "name": "said",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Sensor index",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Alert info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Alert"
+                        }
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "alert"
+          ],
+          "summary": "Create a new alert",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            },
+            {
+              "name": "device_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Device ID",
+              "required": true
+            },
+            {
+              "name": "said",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Sensor index",
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "New alert info",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlertPost"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "The new alert info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/Alert"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/{device_id}/{said}/alert/{alert_uuid}": {
+        "delete": {
+          "tags": [
+            "alert"
+          ],
+          "summary": "Delete alert info by uuid",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            },
+            {
+              "name": "device_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Device ID",
+              "required": true
+            },
+            {
+              "name": "said",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Sensor index",
+              "required": true
+            },
+            {
+              "name": "alert_uuid",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Alert uuid",
+              "required": true
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Delete alert info succeeded"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "get": {
+          "tags": [
+            "alert"
+          ],
+          "summary": "Get alert info by uuid",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            },
+            {
+              "name": "device_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Device ID",
+              "required": true
+            },
+            {
+              "name": "said",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Sensor index",
+              "required": true
+            },
+            {
+              "name": "alert_uuid",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Alert uuid",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Alert info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/Alert"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "patch": {
+          "tags": [
+            "alert"
+          ],
+          "summary": "Update alert info by ID",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            },
+            {
+              "name": "device_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Device ID",
+              "required": true
+            },
+            {
+              "name": "said",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Sensor index",
+              "required": true
+            },
+            {
+              "name": "alert_uuid",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Alert uuid",
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "Alert info to update",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlertPatch"
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "Update alert info succeeded"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/gateways/{gateway_id}/{device_id}/{said}/alert/{alert_uuid}/notice": {
+        "get": {
+          "tags": [
+            "alert"
+          ],
+          "summary": "Get notification config",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            },
+            {
+              "name": "device_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Device ID",
+              "required": true
+            },
+            {
+              "name": "said",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Sensor index",
+              "required": true
+            },
+            {
+              "name": "alert_uuid",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Alert uuid",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Email notification config",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/AlertNotice"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "patch": {
+          "tags": [
+            "alert"
+          ],
+          "summary": "Update notification config",
+          "parameters": [
+            {
+              "name": "gateway_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Gateway ID",
+              "required": true
+            },
+            {
+              "name": "device_id",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Device ID",
+              "required": true
+            },
+            {
+              "name": "said",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Sensor index",
+              "required": true
+            },
+            {
+              "name": "alert_uuid",
+              "schema": {
+                "type": "string"
+              },
+              "in": "path",
+              "description": "Alert uuid",
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "Email notification config to update",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlertNoticePatch"
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "Update email notification config succeeded"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/metering": {
+        "get": {
+          "tags": [
+            "meter"
+          ],
+          "summary": "Get metering info",
+          "parameters": [
+            {
+              "name": "year",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "in": "query",
+              "description": "Year"
+            },
+            {
+              "name": "month",
+              "required": false,
+              "schema": {
+                "type": "string"
+              },
+              "in": "query",
+              "description": "Month to filter"
+            },
+            {
+              "name": "organization_id",
+              "required": false,
+              "schema": {
+                "type": "string"
+              },
+              "in": "query",
+              "description": "Organization ID to filter"
+            },
+            {
+              "name": "service",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "EVENT",
+                  "ALERT"
+                ]
+              },
+              "in": "query",
+              "description": "Service to filter"
+            },
+            {
+              "name": "ignore_discount",
+              "required": false,
+              "schema": {
+                "type": "boolean"
+              },
+              "in": "query",
+              "description": "Do not return service usage with 100% discount (false by default)"
+            },
+            {
+              "name": "previous_month",
+              "required": false,
+              "schema": {
+                "type": "boolean"
+              },
+              "in": "query",
+              "description": "Return also the previous month data if 'month' is provided (false by default)"
+            },
+            {
+              "name": "in_token",
+              "required": false,
+              "schema": {
+                "type": "boolean"
+              },
+              "in": "query",
+              "description": "Return service usage in payment token (false by default)"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Metering info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/metering/storage": {
+        "get": {
+          "tags": [
+            "meter"
+          ],
+          "summary": "Get storage info",
+          "parameters": [
+            {
+              "name": "organization_id",
+              "required": false,
+              "schema": {
+                "type": "string"
+              },
+              "in": "query",
+              "description": "Organization ID to filter"
+            },
+            {
+              "name": "gateway_id",
+              "required": false,
+              "schema": {
+                "type": "string"
+              },
+              "in": "query",
+              "description": "Gateway ID to be included in result"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Storage info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Extra info"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/firmware": {
+        "get": {
+          "tags": [
+            "ota"
+          ],
+          "summary": "Get firmware info",
+          "responses": {
+            "200": {
+              "description": "Firmware info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "latest": {
+                        "type": "string"
+                      },
+                      "firmware": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      }
+    },
+    "openapi": "3.0.2",
+    "components": {
+      "schemas": {
+        "PanelV2": {
+          "type": "object",
+          "properties": {
+            "queries": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "name": {
+              "type": "string",
+              "description": "Panel name",
+              "example": "Meeting Room 1"
+            },
+            "uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "attributes": {
+              "type": "array",
+              "description": "Sensor info",
+              "items": {
+                "type": "object"
+              }
+            },
+            "chart": {
+              "type": "string",
+              "description": "Chart type",
+              "example": "graph"
+            },
+            "modify_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "create_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "dashboard_uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "source": {
+              "type": "string",
+              "enum": [
+                "GATEWAY",
+                "SENSOR",
+                "ACTUATOR",
+                "OTHER"
+              ],
+              "description": "Data source",
+              "example": "SENSOR"
+            }
+          },
+          "required": [
+            "attributes",
+            "chart",
+            "create_time",
+            "dashboard_uuid",
+            "modify_time",
+            "name",
+            "queries",
+            "source",
+            "uuid"
+          ]
+        },
+        "Dashboard": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "description": "Dashboard name",
+              "example": "Meeting Room"
+            },
+            "uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "modify_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "create_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "icon_color": {
+              "type": "string",
+              "description": "Dashboard icon color",
+              "example": "green"
+            },
+            "user_": {
+              "type": "string"
+            },
+            "panels_v2": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/PanelV2"
+              }
+            },
+            "organization_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Organization ID",
+              "example": "59902f3b-fc54-4be4-b188-5dc59662e711"
+            }
+          },
+          "required": [
+            "create_time",
+            "icon_color",
+            "modify_time",
+            "name",
+            "organization_id",
+            "panels_v2",
+            "user_",
+            "uuid"
+          ]
+        },
+        "DashboardPost": {
+          "type": "object",
+          "properties": {
+            "organization_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Organization ID",
+              "example": "59902f3b-fc54-4be4-b188-5dc59662e711"
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "description": "Dashboard name",
+              "example": "Meeting Room"
+            },
+            "icon_color": {
+              "type": "string",
+              "description": "Dashboard icon color",
+              "example": "green"
+            }
+          },
+          "required": [
+            "icon_color",
+            "name",
+            "organization_id"
+          ]
+        },
+        "DashboardPatch": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "description": "Dashboard name",
+              "example": "Meeting Room"
+            },
+            "icon_color": {
+              "type": "string",
+              "description": "Dashboard icon color",
+              "example": "green"
+            }
+          }
+        },
+        "PanelV2Post": {
+          "type": "object",
+          "properties": {
+            "source": {
+              "type": "string",
+              "enum": [
+                "GATEWAY",
+                "SENSOR",
+                "ACTUATOR",
+                "OTHER"
+              ],
+              "description": "Data source",
+              "example": "SENSOR"
+            },
+            "name": {
+              "type": "string",
+              "description": "Panel name",
+              "example": "Meeting Room 1"
+            },
+            "chart": {
+              "type": "string",
+              "description": "Chart type",
+              "example": "graph"
+            },
+            "attributes": {
+              "type": "array",
+              "description": "Sensor info",
+              "items": {
+                "type": "object"
+              }
+            }
+          },
+          "required": [
+            "attributes",
+            "chart",
+            "name",
+            "source"
+          ]
+        },
+        "PanelV2Patch": {
+          "type": "object",
+          "properties": {
+            "source": {
+              "type": "string",
+              "enum": [
+                "GATEWAY",
+                "SENSOR",
+                "ACTUATOR",
+                "OTHER"
+              ],
+              "description": "Data source",
+              "example": "SENSOR"
+            },
+            "name": {
+              "type": "string",
+              "description": "Panel name",
+              "example": "Meeting Room 1"
+            },
+            "chart": {
+              "type": "string",
+              "description": "Chart type",
+              "example": "graph"
+            },
+            "attributes": {
+              "type": "array",
+              "description": "Sensor info",
+              "items": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "Takeout": {
+          "type": "object",
+          "properties": {
+            "end": {
+              "type": "integer",
+              "description": "Ending timestamp",
+              "example": 1621872000
+            },
+            "uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "device_id": {
+              "type": "string",
+              "description": "Device ID",
+              "example": "PH80XXRR0524215566313"
+            },
+            "gateway_id": {
+              "type": "string",
+              "description": "Gateway ID",
+              "example": "PH80XXRR05242155663"
+            },
+            "modify_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "create_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "user_": {
+              "type": "string"
+            },
+            "said": {
+              "type": "integer",
+              "description": "Sensor index",
+              "example": 0
+            },
+            "size": {
+              "type": "integer",
+              "description": "File size in bytes"
+            },
+            "path": {
+              "type": "string",
+              "description": "Data collection file path",
+              "example": "Ignored when creating record and updated by datacollector"
+            },
+            "start": {
+              "type": "integer",
+              "description": "Starting timestamp",
+              "example": 1621785600
+            }
+          },
+          "required": [
+            "create_time",
+            "end",
+            "gateway_id",
+            "modify_time",
+            "start",
+            "user_",
+            "uuid"
+          ]
+        },
+        "TakeoutPost": {
+          "type": "object",
+          "properties": {
+            "said": {
+              "type": "integer",
+              "description": "Sensor index",
+              "example": 0
+            },
+            "device_id": {
+              "type": "string",
+              "description": "Device ID",
+              "example": "PH80XXRR0524215566313"
+            },
+            "start": {
+              "type": "integer",
+              "description": "Starting timestamp",
+              "example": 1621785600
+            },
+            "end": {
+              "type": "integer",
+              "description": "Ending timestamp",
+              "example": 1621872000
+            }
+          },
+          "required": [
+            "end",
+            "start"
+          ]
+        },
+        "Deletion": {
+          "type": "object",
+          "properties": {
+            "number": {
+              "type": "integer",
+              "description": "The number of records have been deleted"
+            },
+            "end": {
+              "type": "integer",
+              "description": "Ending timestamp",
+              "example": "1621872000"
+            },
+            "uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "gateway_id": {
+              "type": "string",
+              "description": "Gateway ID",
+              "example": "PH80XXRR05242155663"
+            },
+            "modify_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "create_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "user_": {
+              "type": "string"
+            },
+            "start": {
+              "type": "integer",
+              "description": "Starting timestamp",
+              "example": "1621785600"
+            },
+            "status": {
+              "type": "string",
+              "description": "Data deletion task status",
+              "example": "Ignored when creating record and updated by datacollector"
+            }
+          },
+          "required": [
+            "create_time",
+            "end",
+            "gateway_id",
+            "modify_time",
+            "start",
+            "user_",
+            "uuid"
+          ]
+        },
+        "DeletionPost": {
+          "type": "object",
+          "properties": {
+            "start": {
+              "type": "integer",
+              "description": "Starting timestamp",
+              "example": "1621785600"
+            },
+            "end": {
+              "type": "integer",
+              "description": "Ending timestamp",
+              "example": "1621872000"
+            }
+          },
+          "required": [
+            "end",
+            "start"
+          ]
+        },
+        "TimeRange": {
+          "type": "object",
+          "properties": {
+            "start": {
+              "type": "integer",
+              "description": "Start timestamp",
+              "example": "1614556800"
+            },
+            "end": {
+              "type": "integer",
+              "description": "End timestamp",
+              "example": "1617148800"
+            }
+          },
+          "required": [
+            "end",
+            "start"
+          ]
+        },
+        "Registry": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Gateway name",
+              "example": "My Gateway"
+            },
+            "uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "group_uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "gateway_id": {
+              "type": "string",
+              "description": "Gateway ID",
+              "example": "PH80XXRR05242155663"
+            },
+            "modify_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "create_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "organization_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Organization ID",
+              "example": "59902f3b-fc54-4be4-b188-5dc59662e711"
+            },
+            "mac": {
+              "type": "string",
+              "description": "Gateway MAC address",
+              "example": "12:34:56:78:9A:BC"
+            },
+            "location": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "description": "Gateway location, [latitude, longitude]",
+              "example": [
+                10.822921,
+                106.62956
+              ],
+              "items": {
+                "type": "number"
+              }
+            },
+            "serial": {
+              "type": "string",
+              "description": "Gateway serial number",
+              "example": "12345678"
+            }
+          },
+          "required": [
+            "create_time",
+            "gateway_id",
+            "mac",
+            "modify_time",
+            "name",
+            "organization_id",
+            "serial",
+            "uuid"
+          ]
+        },
+        "RegistryPost": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Gateway name",
+              "example": "My Gateway"
+            },
+            "gateway_id": {
+              "type": "string",
+              "description": "Gateway ID",
+              "example": "PH80XXRR05242155663"
+            },
+            "organization_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Organization ID",
+              "example": "59902f3b-fc54-4be4-b188-5dc59662e711"
+            },
+            "mac": {
+              "type": "string",
+              "description": "Gateway MAC address",
+              "example": "12:34:56:78:9A:BC"
+            },
+            "location": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "description": "Gateway location, [latitude, longitude]",
+              "example": [
+                10.822921,
+                106.62956
+              ],
+              "items": {
+                "type": "number"
+              }
+            },
+            "serial": {
+              "type": "string",
+              "description": "Gateway serial number",
+              "example": "12345678"
+            }
+          },
+          "required": [
+            "gateway_id",
+            "mac",
+            "name",
+            "organization_id",
+            "serial"
+          ]
+        },
+        "RegistryPatch": {
+          "type": "object",
+          "properties": {
+            "group_uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": {
+              "type": "string",
+              "description": "Gateway name",
+              "example": "My Gateway"
+            },
+            "location": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "description": "Gateway location, [latitude, longitude]",
+              "example": [
+                10.822921,
+                106.62956
+              ],
+              "items": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "Gateway": {
+          "type": "object",
+          "properties": {
+            "OBJ": {
+              "type": "string",
+              "description": "Object id"
+            },
+            "uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "SNO": {
+              "type": "string",
+              "description": "Gateway Serial Number",
+              "example": "312B877C"
+            },
+            "WGPS": {
+              "type": "string",
+              "description": "GPS location"
+            },
+            "registry_uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "PRV": {
+              "type": "string",
+              "description": "Product revision"
+            },
+            "T2": {
+              "type": "string"
+            },
+            "WMAC": {
+              "type": "string",
+              "description": "WiFi MAC id",
+              "example": "34:56:78:9A:BC:DE"
+            },
+            "NETWK": {
+              "type": "string",
+              "description": "Network type"
+            },
+            "WASC": {
+              "type": "string",
+              "description": "Auto-scan"
+            },
+            "modify_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "create_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "T1": {
+              "type": "string"
+            },
+            "MLG": {
+              "type": "string",
+              "description": "Maximum #LDSU allowed"
+            },
+            "IPRT": {
+              "type": "string",
+              "description": "#(LDS port)"
+            },
+            "UUID": {
+              "type": "string",
+              "description": "Gateway ID",
+              "example": "PH80XXRR05242155663"
+            },
+            "FWV": {
+              "type": "string",
+              "description": "Firmware revision"
+            },
+            "WSCS": {
+              "type": "string",
+              "description": "Sensor cache status"
+            },
+            "PMAC": {
+              "type": "string",
+              "description": "Ethernet MAC id",
+              "example": "12:34:56:78:9A:BC"
+            },
+            "ICFG": {
+              "type": "string",
+              "description": "Configuration storage"
+            },
+            "Speed": {
+              "type": "integer",
+              "description": 100
+            },
+            "IP": {
+              "type": "string",
+              "description": "IP address"
+            },
+            "ICAC": {
+              "type": "string",
+              "description": "Sensor cache size"
+            },
+            "M2M": {
+              "type": "string",
+              "description": "Machine to machine"
+            }
+          },
+          "required": [
+            "FWV",
+            "PMAC",
+            "SNO",
+            "UUID",
+            "create_time",
+            "modify_time",
+            "registry_uuid",
+            "uuid"
+          ]
+        },
+        "DeviceInfoPost": {
+          "type": "object",
+          "properties": {
+            "PORT": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 3,
+              "description": "LDSU port number, set 0 for all ports",
+              "example": 0
+            }
+          }
+        },
+        "UartConfig": {
+          "type": "object",
+          "properties": {
+            "uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "parity": {
+              "type": "string",
+              "enum": [
+                "NONE",
+                "ODD",
+                "EVEN"
+              ],
+              "description": "Parity",
+              "example": "NONE"
+            },
+            "registry_uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "flowcontrol": {
+              "type": "string",
+              "enum": [
+                "NONE",
+                "RTS_CTS"
+              ],
+              "description": "Flow control",
+              "example": "NONE"
+            },
+            "databits": {
+              "type": "integer",
+              "minimum": 7,
+              "maximum": 8,
+              "description": "Data bits",
+              "example": 8
+            },
+            "modify_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "create_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "stopbits": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2,
+              "description": "Stop bits",
+              "example": 1
+            },
+            "baudrate": {
+              "type": "integer",
+              "description": "Baud rate",
+              "example": 115200
+            }
+          },
+          "required": [
+            "baudrate",
+            "create_time",
+            "databits",
+            "flowcontrol",
+            "modify_time",
+            "parity",
+            "registry_uuid",
+            "stopbits",
+            "uuid"
+          ]
+        },
+        "UartConfigPost": {
+          "type": "object",
+          "properties": {
+            "parity": {
+              "type": "string",
+              "enum": [
+                "NONE",
+                "ODD",
+                "EVEN"
+              ],
+              "description": "Parity",
+              "example": "NONE"
+            },
+            "flowcontrol": {
+              "type": "string",
+              "enum": [
+                "NONE",
+                "RTS_CTS"
+              ],
+              "description": "Flow control",
+              "example": "NONE"
+            },
+            "databits": {
+              "type": "integer",
+              "minimum": 7,
+              "maximum": 8,
+              "description": "Data bits",
+              "example": 8
+            },
+            "stopbits": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2,
+              "description": "Stop bits",
+              "example": 1
+            },
+            "baudrate": {
+              "type": "integer",
+              "description": "Baud rate",
+              "example": 115200
+            }
+          },
+          "required": [
+            "baudrate",
+            "databits",
+            "flowcontrol",
+            "parity",
+            "stopbits"
+          ]
+        },
+        "SensorAssociationDataSource": {
+          "type": "object",
+          "properties": {
+            "said": {
+              "type": "integer",
+              "description": "Sensor index",
+              "example": 0
+            },
+            "device_id": {
+              "type": "string",
+              "description": "Device ID",
+              "example": "PH80XXRR0607215720500"
+            },
+            "gateway_id": {
+              "type": "string",
+              "description": "Gateway ID",
+              "example": "PH80XXRR06072157205"
+            },
+            "value": {
+              "type": "number",
+              "description": "A fixed value",
+              "example": 12.3
+            }
+          }
+        },
+        "SensorAssociation": {
+          "type": "object",
+          "properties": {
+            "attributes": {
+              "description": "Data source attributes",
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/SensorAssociationDataSource"
+                }
+              ]
+            },
+            "source": {
+              "type": "string",
+              "enum": [
+                "FIXED",
+                "SENSOR"
+              ],
+              "description": "Data source",
+              "example": "FIXED"
+            }
+          },
+          "required": [
+            "attributes",
+            "source"
+          ]
+        },
+        "ActuatorCommandPatch": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Actuator state"
+            },
+            "name": {
+              "type": "string",
+              "description": "Actuator name",
+              "example": "My Actuator"
+            },
+            "end_with": {
+              "type": "string",
+              "enum": [
+                "ACTIVATED",
+                "DEACTIVATED"
+              ],
+              "description": "Actuator status when done loop",
+              "example": "ACTIVATED"
+            },
+            "activate_after": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 3600,
+              "description": "Actuator will activate after specified time period (in seconds)",
+              "example": 1
+            },
+            "number_of_loop": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 65535,
+              "description": "The number of repeat of specified action (set to 0 for non-stop)",
+              "example": 1
+            },
+            "value": {
+              "type": "number",
+              "minimum": 0.0,
+              "description": "Value for analog output",
+              "example": 1.23
+            },
+            "enable_with": {
+              "type": "string",
+              "enum": [
+                "ACTIVATED",
+                "DEACTIVATED"
+              ],
+              "description": "Actuator status when enable",
+              "example": "ACTIVATED"
+            },
+            "deactivate_after": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 3600,
+              "description": "Actuator will deactivate after specified time period (in seconds)",
+              "example": 1
+            },
+            "config_mode": {
+              "type": "string",
+              "enum": [
+                "STATIC",
+                "TIMER_CONDITIONED",
+                "LOOP"
+              ],
+              "description": "Actuator config mode",
+              "example": "STATIC"
+            },
+            "action_mode": {
+              "type": "string",
+              "enum": [
+                "MANUAL",
+                "AUTO"
+              ],
+              "description": "Actuator action mode",
+              "example": "MANUAL"
+            }
+          }
+        },
+        "DeviceConfig": {
+          "type": "object",
+          "properties": {
+            "INTVL": {
+              "type": "integer",
+              "description": "Reporting interval in seconds",
+              "example": 10
+            },
+            "enabled": {
+              "type": "boolean",
+              "description": "LDSU status",
+              "example": true
+            },
+            "name": {
+              "type": "string",
+              "description": "Device name, set to empty string for default name"
+            },
+            "uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "ASSOC": {
+              "description": "Sensor association setting",
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/SensorAssociation"
+                }
+              ]
+            },
+            "registry_uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "CACHE": {
+              "type": "integer"
+            },
+            "modify_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "create_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "sensor_names": {
+              "type": "array",
+              "description": "Sensor name list",
+              "items": {
+                "type": "string"
+              }
+            },
+            "SAIDS": {
+              "type": "array",
+              "description": "Sensor index list",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "UID": {
+              "type": "string",
+              "description": "LDSU uuid"
+            },
+            "CMDS": {
+              "description": "Actuator command list",
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ActuatorCommandPatch"
+                }
+              ]
+            },
+            "MODES": {
+              "type": "array",
+              "description": "Sensor mode list",
+              "items": {
+                "type": "integer"
+              }
+            }
+          },
+          "required": [
+            "ASSOC",
+            "CMDS",
+            "INTVL",
+            "MODES",
+            "SAIDS",
+            "UID",
+            "create_time",
+            "enabled",
+            "modify_time",
+            "name",
+            "registry_uuid",
+            "sensor_names",
+            "uuid"
+          ]
+        },
+        "DeviceConfigPatch": {
+          "type": "object",
+          "properties": {
+            "INTVL": {
+              "type": "integer",
+              "description": "Reporting interval in seconds",
+              "example": 10
+            },
+            "enabled": {
+              "type": "boolean",
+              "description": "LDSU status",
+              "example": true
+            },
+            "name": {
+              "type": "string",
+              "description": "Device name, set to empty string for default name"
+            },
+            "UID": {
+              "type": "string",
+              "description": "LDSU uuid"
+            },
+            "CACHE": {
+              "type": "integer"
+            }
+          }
+        },
+        "SensorConfigPatch": {
+          "type": "object",
+          "properties": {
+            "MODE": {
+              "type": "integer",
+              "description": "Sensor mode",
+              "example": 0
+            },
+            "name": {
+              "type": "string",
+              "description": "Sensor name",
+              "example": "My Temperature Sensor"
+            },
+            "ASSOC": {
+              "type": "array",
+              "description": "Sensor association setting",
+              "items": {
+                "$ref": "#/components/schemas/SensorAssociation"
+              }
+            }
+          }
+        },
+        "DevicesConfigPatch": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "LDSU status",
+              "example": true
+            },
+            "INTVL": {
+              "type": "integer",
+              "description": "Reporting interval in seconds",
+              "example": 10
+            }
+          }
+        },
+        "ActuatorCommand": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Actuator state"
+            },
+            "name": {
+              "type": "string",
+              "description": "Actuator name",
+              "example": "My Actuator"
+            },
+            "end_with": {
+              "type": "string",
+              "enum": [
+                "ACTIVATED",
+                "DEACTIVATED"
+              ],
+              "description": "Actuator status when done loop",
+              "example": "ACTIVATED"
+            },
+            "activate_after": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 3600,
+              "description": "Actuator will activate after specified time period (in seconds)",
+              "example": 1
+            },
+            "number_of_loop": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 65535,
+              "description": "The number of repeat of specified action (set to 0 for non-stop)",
+              "example": 1
+            },
+            "value": {
+              "type": "number",
+              "minimum": 0.0,
+              "description": "Value for analog output",
+              "example": 1.23
+            },
+            "modify_ts": {
+              "type": "number"
+            },
+            "enable_with": {
+              "type": "string",
+              "enum": [
+                "ACTIVATED",
+                "DEACTIVATED"
+              ],
+              "description": "Actuator status when enable",
+              "example": "ACTIVATED"
+            },
+            "deactivate_after": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 3600,
+              "description": "Actuator will deactivate after specified time period (in seconds)",
+              "example": 1
+            },
+            "config_mode": {
+              "type": "string",
+              "enum": [
+                "STATIC",
+                "TIMER_CONDITIONED",
+                "LOOP"
+              ],
+              "description": "Actuator config mode",
+              "example": "STATIC"
+            },
+            "action_mode": {
+              "type": "string",
+              "enum": [
+                "MANUAL",
+                "AUTO"
+              ],
+              "description": "Actuator action mode",
+              "example": "MANUAL"
+            }
+          },
+          "required": [
+            "modify_ts"
+          ]
+        },
+        "ErrorResponse": {
+          "type": "object",
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "errors": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "description",
+            "title"
+          ]
+        },
+        "ActuatorCommandPost": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Actuator state"
+            }
+          },
+          "required": [
+            "enabled"
+          ]
+        },
+        "GatewayStatus": {
+          "type": "object",
+          "properties": {
+            "uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "registry_uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "modify_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "create_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "STARTING",
+                "RUNNING",
+                "RESTART",
+                "RESTARTING",
+                "STOP",
+                "STOPING",
+                "STOPPED",
+                "START"
+              ],
+              "description": "Gateway status"
+            }
+          },
+          "required": [
+            "create_time",
+            "modify_time",
+            "registry_uuid",
+            "status",
+            "uuid"
+          ]
+        },
+        "GatewayStatusPost": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "STARTING",
+                "RUNNING",
+                "RESTART",
+                "RESTARTING",
+                "STOP",
+                "STOPING",
+                "STOPPED",
+                "START"
+              ],
+              "description": "Gateway status"
+            }
+          },
+          "required": [
+            "status"
+          ]
+        },
+        "PortStatus": {
+          "type": "object",
+          "properties": {
+            "uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "registry_uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "modify_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "create_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "PORT": {
+              "type": "array",
+              "description": "Port status",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "NORMAL",
+                  "HARDWARE_FAULT",
+                  "POWER_FAULT",
+                  "POWER_CONSUMED",
+                  "NO_DEVICE"
+                ]
+              }
+            }
+          },
+          "required": [
+            "PORT",
+            "create_time",
+            "modify_time",
+            "registry_uuid",
+            "uuid"
+          ]
+        },
+        "EmailMessage": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Email message status",
+              "example": true
+            },
+            "uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "message_uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "modify_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "create_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "html": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096,
+              "description": "Email body in HTML when issue \"AT+E\" command",
+              "example": "<html>\n<head></head>\n<body>\n  <h1>Gateway Message</h1>\n  <p>Details</p>\n</body>\n</html>"
+            },
+            "recipients": {
+              "type": "array",
+              "description": "Recipients' username",
+              "example": [
+                "abc@xyz.com",
+                "xyz@abc.com"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            "subject": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 280,
+              "description": "Email subject when issue \"AT+E\" command",
+              "example": "Message from gateway XXX"
+            }
+          },
+          "required": [
+            "create_time",
+            "enabled",
+            "html",
+            "message_uuid",
+            "modify_time",
+            "recipients",
+            "subject",
+            "uuid"
+          ]
+        },
+        "PushMessage": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Push message status",
+              "example": true
+            },
+            "uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "message_uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "modify_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "create_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "recipients": {
+              "type": "array",
+              "description": "Recipients' username",
+              "example": [
+                "abc@xyz.com",
+                "xyz@abc.com"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            "text": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 280,
+              "description": "Message when issue \"AT+N\" command",
+              "example": "Message from gateway XXX"
+            },
+            "subject": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 280,
+              "description": "Notification subject when issue \"AT+N\" command",
+              "example": "Message from gateway XXX"
+            }
+          },
+          "required": [
+            "create_time",
+            "enabled",
+            "message_uuid",
+            "modify_time",
+            "recipients",
+            "subject",
+            "text",
+            "uuid"
+          ]
+        },
+        "SmsMessage": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "SMS message status",
+              "example": true
+            },
+            "uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "message_uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "modify_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "create_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "recipients": {
+              "type": "array",
+              "description": "Recipients' username",
+              "example": [
+                "abc@xyz.com",
+                "xyz@abc.com"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            "text": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 280,
+              "description": "Message when issue \"AT+M\" command",
+              "example": "Message from gateway XXX"
+            }
+          },
+          "required": [
+            "create_time",
+            "enabled",
+            "message_uuid",
+            "modify_time",
+            "recipients",
+            "text",
+            "uuid"
+          ]
+        },
+        "Message": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "$ref": "#/components/schemas/EmailMessage"
+            },
+            "uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "registry_uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "modify_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "create_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "push": {
+              "$ref": "#/components/schemas/PushMessage"
+            },
+            "sms": {
+              "$ref": "#/components/schemas/SmsMessage"
+            }
+          },
+          "required": [
+            "create_time",
+            "modify_time",
+            "registry_uuid",
+            "uuid"
+          ]
+        },
+        "EmailMessagePatch": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Email message status",
+              "example": true
+            },
+            "html": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096,
+              "description": "Email body in HTML when issue \"AT+E\" command",
+              "example": "<html>\n<head></head>\n<body>\n  <h1>Gateway Message</h1>\n  <p>Details</p>\n</body>\n</html>"
+            },
+            "recipients": {
+              "type": "array",
+              "description": "Recipients' username",
+              "example": [
+                "abc@xyz.com",
+                "xyz@abc.com"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            "subject": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 280,
+              "description": "Email subject when issue \"AT+E\" command",
+              "example": "Message from gateway XXX"
+            }
+          }
+        },
+        "SmsMessagePatch": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 280,
+              "description": "Message when issue \"AT+M\" command",
+              "example": "Message from gateway XXX"
+            },
+            "enabled": {
+              "type": "boolean",
+              "description": "SMS message status",
+              "example": true
+            },
+            "recipients": {
+              "type": "array",
+              "description": "Recipients' username",
+              "example": [
+                "abc@xyz.com",
+                "xyz@abc.com"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "PushMessagePatch": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 280,
+              "description": "Message when issue \"AT+N\" command",
+              "example": "Message from gateway XXX"
+            },
+            "enabled": {
+              "type": "boolean",
+              "description": "Push message status",
+              "example": true
+            },
+            "recipients": {
+              "type": "array",
+              "description": "Recipients' username",
+              "example": [
+                "abc@xyz.com",
+                "xyz@abc.com"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            "subject": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 280,
+              "description": "Notification subject when issue \"AT+N\" command",
+              "example": "Message from gateway XXX"
+            }
+          }
+        },
+        "Group": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Gateway group name",
+              "example": "My Gateway Group"
+            },
+            "uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "gateways": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Registry"
+              }
+            },
+            "modify_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "create_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "organization_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Organization ID",
+              "example": "59902f3b-fc54-4be4-b188-5dc59662e711"
+            }
+          },
+          "required": [
+            "create_time",
+            "gateways",
+            "modify_time",
+            "name",
+            "organization_id",
+            "uuid"
+          ]
+        },
+        "GroupPost": {
+          "type": "object",
+          "properties": {
+            "organization_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Organization ID",
+              "example": "59902f3b-fc54-4be4-b188-5dc59662e711"
+            },
+            "name": {
+              "type": "string",
+              "description": "Gateway group name",
+              "example": "My Gateway Group"
+            }
+          },
+          "required": [
+            "name",
+            "organization_id"
+          ]
+        },
+        "GatewayLocationUpdate": {
+          "type": "object",
+          "properties": {
+            "gateway_id": {
+              "type": "string",
+              "description": "Gateway ID",
+              "example": "PH80XXRR05242155664"
+            },
+            "location": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "description": "[latitude, longitude]",
+              "example": [
+                10.822921,
+                106.62956
+              ],
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          "required": [
+            "gateway_id",
+            "location"
+          ]
+        },
+        "GatewayGroupPatch": {
+          "type": "object",
+          "properties": {
+            "remove": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "Gateway ID",
+                "example": "PH80XXRR05242155664"
+              }
+            },
+            "name": {
+              "type": "string",
+              "description": "Group name",
+              "example": "My Group Name"
+            },
+            "add": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "Gateway ID",
+                "example": "PH80XXRR05242155663"
+              }
+            },
+            "update": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/GatewayLocationUpdate"
+              }
+            }
+          }
+        },
+        "Ota": {
+          "type": "object",
+          "properties": {
+            "uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "registry_uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "version": {
+              "type": "string",
+              "description": "FW version",
+              "example": "0.4.2"
+            },
+            "modify_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "create_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "host": {
+              "type": "string",
+              "description": "Host environment",
+              "example": "dev"
+            },
+            "start": {
+              "type": "integer",
+              "description": "OTA starting timestamp"
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "FAILED",
+                "IN_PROGRESS",
+                "COMPLETED"
+              ],
+              "description": "OTA status",
+              "example": "COMPLETED"
+            }
+          },
+          "required": [
+            "create_time",
+            "host",
+            "modify_time",
+            "registry_uuid",
+            "status",
+            "uuid",
+            "version"
+          ]
+        },
+        "FirmwareVersion": {
+          "type": "object",
+          "properties": {
+            "version": {
+              "type": "string",
+              "description": "FW version",
+              "example": "0.3.8"
+            }
+          }
+        },
+        "GroupFirmwareVersion": {
+          "type": "object",
+          "properties": {
+            "version": {
+              "type": "string",
+              "description": "FW version",
+              "example": "0.3.8"
+            },
+            "selected": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "Gateway ID",
+                "example": "PH80XXRR05242155663"
+              }
+            }
+          }
+        },
+        "AlertNotice": {
+          "type": "object",
+          "properties": {
+            "enabled_push": {
+              "type": "boolean",
+              "description": "Push notice status",
+              "example": true
+            },
+            "enabled": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "description": "Alert firing and resolved notice status",
+              "example": [
+                true,
+                true
+              ],
+              "items": {
+                "type": "boolean"
+              }
+            },
+            "alert_uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "recipients_sms": {
+              "type": "array",
+              "description": "SMS recipients' username",
+              "example": [
+                "abc@xyz.com",
+                "xyz@abc.com"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            "recipients_push": {
+              "type": "array",
+              "description": "Push notification recipients' username",
+              "example": [
+                "abc@xyz.com",
+                "xyz@abc.com"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            "modify_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "create_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "recipients_email": {
+              "type": "array",
+              "description": "Email recipients' username",
+              "example": [
+                "abc@xyz.com",
+                "xyz@abc.com"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            "enabled_email": {
+              "type": "boolean",
+              "description": "Email notice status",
+              "example": true
+            },
+            "text": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "description": "Message when alert firing and resolved",
+              "example": [
+                "Alert Firing",
+                "Alert Resolved"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            "subject": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "description": "Subject of Email or push notification when alert firing and resolved",
+              "example": [
+                "Over temperature",
+                "Back to normal temperature"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            "enabled_sms": {
+              "type": "boolean",
+              "description": "SMS notice status",
+              "example": true
+            }
+          },
+          "required": [
+            "alert_uuid",
+            "create_time",
+            "enabled",
+            "enabled_email",
+            "enabled_push",
+            "enabled_sms",
+            "modify_time",
+            "subject",
+            "text",
+            "uuid"
+          ]
+        },
+        "Alert": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Alert status",
+              "example": true
+            },
+            "interval": {
+              "type": "integer",
+              "minimum": 5,
+              "description": "How often the condition is evaluated, in seconds",
+              "example": 60
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "description": "Alert name",
+              "example": "Over Temperature"
+            },
+            "uuid": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "device_id": {
+              "type": "string",
+              "description": "Device ID"
+            },
+            "gateway_id": {
+              "type": "string",
+              "description": "Gateway ID",
+              "example": "PH80XXRR05242155663"
+            },
+            "modify_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "create_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "repeat": {
+              "type": "integer",
+              "minimum": 30,
+              "description": "Repeat sending notification interval, in seconds",
+              "example": 60
+            },
+            "user_": {
+              "type": "string"
+            },
+            "said": {
+              "type": "integer",
+              "description": "Sensor index"
+            },
+            "vars_": {
+              "type": "array",
+              "minItems": 1,
+              "description": "List of variables",
+              "example": [
+                "$value(mqtt2tsdb_temperature_degree_c)",
+                "30",
+                "$value(mqtt2tsdb_temperature_degree_c)",
+                "40"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            "ops": {
+              "type": "array",
+              "minItems": 1,
+              "description": "List of operations",
+              "example": [
+                ">",
+                "and",
+                "<"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            "notice": {
+              "$ref": "#/components/schemas/AlertNotice"
+            },
+            "subscript_uuid": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Subscription ID",
+              "example": "59902f3b-fc54-4be4-b188-5dc59662e711"
+            },
+            "for_": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Condition evaluated as true for how long before triggering alert, in seconds",
+              "example": 60
+            }
+          },
+          "required": [
+            "create_time",
+            "device_id",
+            "enabled",
+            "for_",
+            "gateway_id",
+            "interval",
+            "modify_time",
+            "name",
+            "ops",
+            "repeat",
+            "said",
+            "user_",
+            "uuid",
+            "vars_"
+          ]
+        },
+        "AlertPost": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Alert status",
+              "example": true
+            },
+            "interval": {
+              "type": "integer",
+              "minimum": 5,
+              "description": "How often the condition is evaluated, in seconds",
+              "example": 60
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "description": "Alert name",
+              "example": "Over Temperature"
+            },
+            "repeat": {
+              "type": "integer",
+              "minimum": 30,
+              "description": "Repeat sending notification interval, in seconds",
+              "example": 60
+            },
+            "vars_": {
+              "type": "array",
+              "minItems": 1,
+              "description": "List of variables",
+              "example": [
+                "$value(mqtt2tsdb_temperature_degree_c)",
+                "30",
+                "$value(mqtt2tsdb_temperature_degree_c)",
+                "40"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            "ops": {
+              "type": "array",
+              "minItems": 1,
+              "description": "List of operations",
+              "example": [
+                ">",
+                "and",
+                "<"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            "subscript_uuid": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Subscription ID",
+              "example": "59902f3b-fc54-4be4-b188-5dc59662e711"
+            },
+            "for_": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Condition evaluated as true for how long before triggering alert, in seconds",
+              "example": 60
+            }
+          },
+          "required": [
+            "enabled",
+            "for_",
+            "interval",
+            "name",
+            "ops",
+            "repeat",
+            "vars_"
+          ]
+        },
+        "AlertPatch": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Alert status",
+              "example": true
+            },
+            "interval": {
+              "type": "integer",
+              "minimum": 5,
+              "description": "How often the condition is evaluated, in seconds",
+              "example": 60
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "description": "Alert name",
+              "example": "Over Temperature"
+            },
+            "repeat": {
+              "type": "integer",
+              "minimum": 30,
+              "description": "Repeat sending notification interval, in seconds",
+              "example": 60
+            },
+            "vars_": {
+              "type": "array",
+              "minItems": 1,
+              "description": "List of variables",
+              "example": [
+                "$value(mqtt2tsdb_temperature_degree_c)",
+                "30",
+                "$value(mqtt2tsdb_temperature_degree_c)",
+                "40"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            "ops": {
+              "type": "array",
+              "minItems": 1,
+              "description": "List of operations",
+              "example": [
+                ">",
+                "and",
+                "<"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            "subscript_uuid": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Subscription ID",
+              "example": "59902f3b-fc54-4be4-b188-5dc59662e711"
+            },
+            "for_": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Condition evaluated as true for how long before triggering alert, in seconds",
+              "example": 60
+            }
+          }
+        },
+        "AlertNoticePatch": {
+          "type": "object",
+          "properties": {
+            "enabled_push": {
+              "type": "boolean",
+              "description": "Push notice status",
+              "example": true
+            },
+            "enabled": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "description": "Alert firing and resolved notice status",
+              "example": [
+                true,
+                true
+              ],
+              "items": {
+                "type": "boolean"
+              }
+            },
+            "recipients_sms": {
+              "type": "array",
+              "description": "SMS recipients' username",
+              "example": [
+                "abc@xyz.com",
+                "xyz@abc.com"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            "recipients_push": {
+              "type": "array",
+              "description": "Push notification recipients' username",
+              "example": [
+                "abc@xyz.com",
+                "xyz@abc.com"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            "recipients_email": {
+              "type": "array",
+              "description": "Email recipients' username",
+              "example": [
+                "abc@xyz.com",
+                "xyz@abc.com"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            "enabled_email": {
+              "type": "boolean",
+              "description": "Email notice status",
+              "example": true
+            },
+            "text": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "description": "Message when alert firing and resolved",
+              "example": [
+                "Alert Firing",
+                "Alert Resolved"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            "subject": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "description": "Subject of Email or push notification when alert firing and resolved",
+              "example": [
+                "Over temperature",
+                "Back to normal temperature"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            "enabled_sms": {
+              "type": "boolean",
+              "description": "SMS notice status",
+              "example": true
+            }
+          }
+        }
+      },
+      "securitySchemes": {
+        "AccessToken": {
+          "type": "http",
+          "description": "AWS Cognito access token in header",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
+      }
+    }
+  }

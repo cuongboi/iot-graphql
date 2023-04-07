@@ -1,0 +1,24 @@
+{
+  "name": "swagger-to-service",
+  "type": "commonjs",
+  "version": "1.0.0",
+  "description": "",
+  "bin": {
+    "swagger-to-service": "bin/cli.mjs"
+  },
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "scripts": {
+    "postinstall": "node ./bin/cli.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "glob": "^9.3.4",
+    "lodash": "^4.17.21",
+    "openapi-typescript": "^6.2.1",
+    "sw": "link:sw",
+    "ts-morph": "^18.0.0"
+  }
+}
