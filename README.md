@@ -20,3 +20,6 @@ $ nest g resource <module name>
 ``` 
 Then select graphql (code first)
 
+### Generate API Service to Axios Service 
+- Add Swagger Json file to directory ./swagger-to-service/jsons
+- Run command `pnpm swagger-to-service` to create Axios Services
