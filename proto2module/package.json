@@ -1,0 +1,20 @@
+{
+  "name": "protoc2nestjsclient",
+  "version": "1.0.0",
+  "type": "commonjs",
+  "description": "",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "config": {
+    "protocVersion": "3.11.0"
+  },
+  "devDependencies": {
+    "execa": "^7.1.1",
+    "glob": "^9.3.4",
+    "google-proto-files": "^3.0.3",
+    "ts-morph": "^18.0.0",
+    "ts-proto": "^1.146.0",
+    "yargs": "^17.7.1"
+  }
+}

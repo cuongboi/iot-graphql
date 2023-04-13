@@ -23,3 +23,7 @@ Then select graphql (code first)
 ### Generate API Service to Axios Service 
 - Add Swagger Json file to directory ./swagger-to-service/jsons
 - Run command `pnpm swagger-to-service` to create Axios Services
+
+
+### Generate gRPC to NestJs Module 
+- Goto Directory and read more `cd proto2module && cat README.md`
