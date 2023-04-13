@@ -176,7 +176,7 @@ async function generateJs() {
 
     project
       .createSourceFile(
-        `grpc/${protoCons.name}.types.ts`,
+        `grpc/types/${protoCons.name}.types.ts`,
         sourceFile.getText(),
         {
           overwrite: true,
@@ -186,7 +186,7 @@ async function generateJs() {
 
     sourceNestJsService.addImportDeclaration({
       namedImports: [mainInterface.getName()],
-      moduleSpecifier: `./${protoCons.name}.types`,
+      moduleSpecifier: `./types/${protoCons.name}.types`,
     });
   }
 
@@ -235,9 +235,9 @@ async function generateJs() {
   sourceNestJsModule.saveSync();
   sourceNestJsService.saveSync();
 
-  $`rm -rf ${targetPath}/grpc`;
-  $`mv grpc ${targetPath}`;
-  $`mv proto ${targetPath}/grpc`;
+  await $`rm -rf ${targetPath}/grpc`;
+  await $`mv grpc ${targetPath}`;
+  await $`mv proto ${targetPath}/grpc`;
   $`rm -rf compiled_proto`;
 }
 
